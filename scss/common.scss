@@ -1,0 +1,278 @@
+@mixin unset($rec: false) {
+  all: unset;
+
+  @if $rec {
+    * {
+      all: unset;
+    }
+  }
+}
+
+@mixin hover_lighten($amount: 0.3, $dur: $dur_med) {
+  * {
+    transition: box-shadow $dur $md3_emph_decel;
+  }
+  &:hover {
+    * {
+      transition: box-shadow $dur $md3_emph_decel;
+      box-shadow: inset 0 0 0 10em rgba(255, 255, 255, $amount);
+    }
+  }
+}
+
+@mixin hover_text($color, $amount: 5%, $dur: $dur_med) {
+  * {
+    transition: color $dur $md3_emph_decel;
+  }
+  &:hover {
+    * {
+      transition: color $dur $md3_emph_decel;
+      color: lighten($color, $amount);
+    }
+  }
+}
+
+@mixin spacing($multiplier: 1, $spacing: $spacing, $rec: false) {
+  &.horizontal > * {
+    margin: 0 calc($spacing * $multiplier / 2);
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &.vertical > * {
+    margin: calc($spacing * $multiplier / 2) 0;
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @if $rec {
+    box {
+      &.horizontal > * {
+        margin: 0 calc($spacing * $multiplier / 2);
+        &:first-child {
+          margin-left: 0;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      &.vertical > * {
+        margin: calc($spacing * $multiplier / 2) 0;
+        &:first-child {
+          margin-top: 0;
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@mixin button_focus() {
+  // box-shadow: inset 0 0 0 $border_width $accent;
+  // background-color: $hover;
+  // color: $hover_fg;
+}
+
+@mixin button_hover() {
+  background-color: lighten($hover, 2%);
+  color: $hover_fg;
+}
+
+@mixin button_active() {
+  background-color: lighten($hover, 8%);
+  color: $hover_fg;
+}
+
+@mixin button_disabled() {
+  box-shadow: none;
+  background-color: transparent;
+  color: transparentize($fg, 0.7);
+}
+
+@mixin button($flat: false, $reactive: true, $radii: $radii, $focusable: true) {
+  transition: $dur_med;
+  border-radius: $radii;
+  color: $fg;
+
+  @if $flat {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+  } @else {
+    background-color: $surface1;
+  }
+
+  @if $reactive {
+    @if $focusable {
+      &:focus {
+        @include button_focus;
+      }
+    }
+
+    &:hover {
+      @include button_hover;
+    }
+
+    &:active,
+    &.on,
+    &.active,
+    &:checked {
+      @include button_active;
+    }
+  }
+
+  &:disabled {
+    @include button_disabled;
+  }
+}
+
+@mixin floating_widget($shaded: false) {
+  * {
+    font-size: $font_size;
+    background-color: transparent;
+  }
+  @if not $shaded {
+    box-shadow: 0 0 4px $shadow_color;
+  }
+  margin: 7px; // hyprland gaps_out - 1
+  border: $border_width solid $border_color;
+  border-radius: $radii;
+  background-color: $bg;
+  color: $fg;
+  padding: $spacing;
+}
+
+@mixin widget {
+  border-radius: $radii;
+  color: $fg;
+  background-color: $surface1;
+  border: $border;
+  box-shadow: 0 0 4px $shadow_color;
+}
+
+@mixin slider(
+  $width: 0.7em,
+  $slider-width: 0.5em,
+  $gradient: $active_gradient,
+  $slider: true,
+  $focusable: true,
+  $radii: $radii
+) {
+  @include unset($rec: true);
+  trough {
+    transition: $dur_med;
+    border-radius: $radii;
+    border: $border;
+    min-height: $width;
+    min-width: $width;
+    background-color: $surface2;
+
+    highlight,
+    progress {
+      border-radius: max($radii - $border-width, 0);
+      background-image: $gradient;
+      min-height: $width;
+      min-width: $width;
+    }
+  }
+
+  slider {
+    box-shadow: none;
+    background-color: transparent;
+    border: $border-width solid transparent;
+    transition: $dur_med;
+    border-radius: $radii;
+    min-height: $width;
+    min-width: $width;
+    margin: -$slider-width;
+  }
+
+  &:hover {
+    trough {
+      background-color: $hover;
+    }
+
+    slider {
+      @if $slider {
+        background-color: $fg;
+      }
+    }
+  }
+
+  &:disabled {
+    highlight,
+    progress {
+      background-color: transparentize($fg, 0.4);
+      background-image: none;
+    }
+  }
+
+  @if $focusable {
+    trough:focus {
+      background-color: $hover;
+      box-shadow: inset 0 0 0 $border-width $accent;
+
+      slider {
+        @if $slider {
+          background-color: $fg;
+          box-shadow: inset 0 0 0 $border-width $accent;
+        }
+      }
+    }
+  }
+}
+
+@mixin scrollable {
+  scrollbar,
+  scrollbar * {
+    all: unset;
+  }
+
+  scrollbar.vertical {
+    transition: $dur_short;
+    background-color: transparentize($bg, 0.7);
+
+    &:hover {
+      background-color: transparentize($bg, 0.3);
+
+      slider {
+        background-color: $hover;
+        min-width: 6px;
+      }
+    }
+  }
+
+  scrollbar.vertical slider {
+    background-color: $surface2;
+    border-radius: $radii;
+    min-width: 4px;
+    min-height: 2em;
+    transition: $dur_short;
+  }
+}
+
+@mixin switch {
+  @include button;
+
+  slider {
+    background-color: $fg;
+    border-radius: $radii;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  image {
+    color: transparent;
+  }
+}

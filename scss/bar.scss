@@ -1,0 +1,254 @@
+$bar_spacing: 6px;
+$bar_margin_v: 5px;
+$bar_margin_h: 12px;
+$bar_button_background_hover: false;
+
+@mixin bar_button_hover($color, $amount: 0.85) {
+  transition: all $dur_long $md3_emph_decel;
+  &:hover {
+    background-color: transparentize($color, $amount);
+    transition: all $dur_long $md3_emph_decel;
+  }
+}
+
+.bar {
+  background-color: $bg;
+  color: $fg;
+  padding: 0 $bar_margin_h;
+  * {
+    font-family: $font;
+    font-weight: 600;
+    font-size: $font_size;
+  }
+
+  label {
+    font-weight: 700;
+  }
+
+  @keyframes activate_width {
+    from {
+      min-width: 8px;
+    }
+    to {
+      min-width: 26px;
+    }
+  }
+  @keyframes activate_padding {
+    from {
+      padding: 8px 8px;
+    }
+    to {
+      padding: 8px 0px;
+    }
+  }
+  @keyframes deactivate_width {
+    from {
+      min-width: 13px;
+    }
+    to {
+      min-width: 8px;
+    }
+  }
+  @keyframes deactivate_padding {
+    from {
+      padding: 8px 0px;
+    }
+    to {
+      padding: 8px 8px;
+    }
+  }
+  $ws_active_width: 26px;
+  .workspaces {
+    margin: 4px 0;
+
+    .ws-box {
+      min-width: $ws_active_width * 6;
+      min-height: 24px;
+      margin-right: $bar_spacing;
+    }
+
+    button {
+      all: unset;
+      padding: 8px 8px;
+      min-height: 8px;
+      min-width: 8px;
+
+      animation: deactivate_padding $dur_short ease;
+      .box {
+        animation: deactivate_width $dur_short ease;
+        border-radius: 1rem;
+        min-height: 8px;
+        min-width: 8px;
+        background-color: $surface4;
+      }
+      &.empty {
+        .box {
+          background-color: $surface4;
+        }
+      }
+      &.occupied {
+        .box {
+          background-color: $purple;
+        }
+      }
+      &.active {
+        animation: activate_padding calc($dur_short / 2) ease;
+        transition: padding calc($dur_short / 2);
+        padding: 8px 0px;
+        color: $blue;
+        .box {
+          animation: activate_width $dur_short ease;
+          min-width: $ws_active_width;
+          border-radius: 1rem;
+          background-color: $purple;
+        }
+      }
+    }
+  }
+
+  .tasklist {
+    button {
+      all: unset;
+      * {
+        background-color: transparent;
+      }
+
+      .icon {
+        margin-right: 8px;
+        color: $dark_blue;
+      }
+
+      color: $pink;
+      padding: 0px $bar_spacing;
+      border-radius: 0;
+      &.active {
+        color: $purple;
+      }
+      &.minimized {
+        color: $fg;
+        background-color: black;
+      }
+    }
+  }
+
+  .submenu {
+    @include button($flat: true);
+    margin: $bar_margin_v 2px;
+    padding: 4px $bar_spacing - 2px;
+    margin-left: $bar_spacing;
+    margin-right: calc($bar_spacing / 2);
+  }
+  .systray {
+    margin-left: $bar_spacing;
+    margin-right: calc($bar_spacing);
+    button {
+      margin: $bar_margin_v 0px;
+      padding: 2px 2px;
+      border-radius: 2em;
+      transition: all $dur_med $md3_emph_decel;
+      transition: all $dur_med $md3_emph_decel;
+      &:hover {
+        box-shadow: inset 0 0 0 $border_width $border_color;
+        background-color: $hover;
+        color: $hover_fg;
+      }
+    }
+  }
+
+  .media {
+    all: unset;
+    * {
+      background-color: transparent;
+    }
+
+    .text {
+      margin: $bar_margin_v 0px;
+      padding: 0px $bar_spacing - 2px 0px $bar_spacing;
+      border-radius: 1em;
+      @if $bar_button_background_hover {
+        transition: all $dur_med $md3_emph_decel;
+        &:hover {
+          @include bar_button_hover(mix($red, $orange));
+        }
+      }
+    }
+
+    *.cover {
+      min-width: 14px;
+      min-height: 1px;
+      padding: 9px 0px;
+      margin-right: 2px;
+      .image {
+        border-radius: 2px;
+        background-size: cover;
+        background-position: center;
+      }
+      @if $bar_button_background_hover {
+        &:hover {
+          .hoverbox {
+            background-color: transparentize($color: $fg, $amount: 0.85);
+            transition: all $dur_med $md3_emph_decel;
+          }
+        }
+        .hoverbox {
+          border-radius: 2px;
+          min-width: 14px;
+          transition: all $dur_med $md3_emph_decel;
+          background-color: transparent;
+          box-shadow: inset 0 0 0 0px transparent;
+        }
+      }
+    }
+    .artist {
+      color: $red;
+    }
+    .title {
+      color: $orange;
+    }
+  }
+
+  .volume {
+    all: unset;
+    color: $green;
+    margin: 5px 0px;
+    padding: 0px $bar_spacing;
+    border-radius: 1em;
+    image {
+      font-size: $font-size - 2px;
+      margin-right: 4px;
+    }
+    label {
+      min-width: 24px;
+    }
+
+    @if $bar_button_background_hover {
+      @include bar_button_hover($green);
+    }
+  }
+
+  .network {
+    button {
+      all: unset;
+      color: $blue;
+      margin: $bar_margin_v 0px;
+      padding: 0px $bar_spacing;
+      border-radius: 1em;
+      @if $bar_button_background_hover {
+        @include bar_button_hover($blue);
+      }
+      image {
+        font-size: $font-size - 2px;
+      }
+    }
+  }
+
+  .clock-button {
+    all: unset;
+    color: $purple;
+    margin: $bar_margin_v 0 $bar_margin_v $bar_spacing;
+    border-radius: 1em;
+    @if $bar_button_background_hover {
+      @include bar_button_hover($purple);
+    }
+  }
+}
