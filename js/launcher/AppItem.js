@@ -1,4 +1,4 @@
-import { launchApp } from "../helpers.js";
+import { launchApp } from "../helpers/Misc.js";
 import icons from "../icons.js";
 import { App, Utils, Widget } from "../imports.js";
 
@@ -30,7 +30,7 @@ export default (app) => {
     setup: (self) => {
       self.app = app;
     },
-    on_clicked: () => {
+    onClicked: () => {
       App.closeWindow("launcher");
       launchApp(app);
     },

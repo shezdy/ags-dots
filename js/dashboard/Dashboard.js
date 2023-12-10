@@ -1,6 +1,6 @@
 import { Widget } from "../imports.js";
-import PopupWindow from "../misc/PopupWindow.js";
 import Brightness from "../services/Brightness.js";
+import PopupWindow from "../widgets/PopupWindow.js";
 import BrightnessSliderRow, { BrightnessMixer } from "./BrightnessSettings.js";
 import Header from "./Header.js";
 import NotificationCenter from "./NotificationCenter.js";

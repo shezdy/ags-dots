@@ -2,7 +2,7 @@ import {
   focusClientOrMinimize,
   fullscreenToggle,
   getHyprlandClientIcon,
-} from "../helpers.js";
+} from "../helpers/Misc.js";
 import { Hyprland, Widget } from "../imports.js";
 
 const TaskButton = (client) => {

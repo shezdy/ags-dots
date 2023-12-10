@@ -24,16 +24,15 @@ export default () =>
               Audio,
               (self) => {
                 if (!Audio.speaker) return;
-                const vol = Audio.speaker.volume * 100;
-                const icon = [
-                  [101, "overamplified"],
-                  [35, "high"],
-                  [1, "medium"],
-                  [0, "muted"],
-                ].find(([threshold]) => threshold <= vol)[1];
+                const vol = Math.ceil(Audio.speaker.volume * 100);
+
+                let icon = "high";
+                if (vol <= 0 || Audio.speaker.stream.isMuted) icon = "muted";
+                else if (vol < 35) icon = "medium";
+                else if (vol > 100) icon = "overamplified";
 
                 self.icon = `audio-volume-${icon}-symbolic`;
-                self.tooltipText = `Volume ${Math.floor(vol)}%`;
+                self.tooltipText = `Volume ${vol}%`;
               },
               "speaker-changed",
             ],

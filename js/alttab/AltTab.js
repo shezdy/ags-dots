@@ -1,6 +1,6 @@
-import { focusClient, getHyprlandClientIcon } from "../helpers.js";
+import { focusClient, getHyprlandClientIcon } from "../helpers/Misc.js";
+import Mutex from "../helpers/Mutex.js";
 import { Gtk, Hyprland, Variable, Widget } from "../imports.js";
-import Mutex from "../misc/Mutex.js";
 
 const mutex = new Mutex();
 const selectedIndex = Variable(1);
@@ -94,9 +94,9 @@ const AltTabFlowbox = (tasks, colNum) =>
     className: "app-list",
     vpack: "start",
     hpack: "start",
-    min_children_per_line: colNum,
-    max_children_per_line: colNum,
-    selection_mode: Gtk.SelectionMode.NONE,
+    minChildrenPerLine: colNum,
+    maxChildrenPerLine: colNum,
+    selectionMode: Gtk.SelectionMode.NONE,
     setup: (self) => {
       tasks.map((task, index) => {
         self.add(TaskBox(task, index));

@@ -1,4 +1,4 @@
-import { ASSET_DIR } from "../helpers.js";
+import { ASSET_DIR } from "../helpers/Misc.js";
 import { Hyprland, Mpris, Widget } from "../imports.js";
 
 const MediaBox = ({ player }) => {

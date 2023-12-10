@@ -4,9 +4,9 @@ import Dashboard from "./dashboard/Dashboard.js";
 import Desktop from "./desktop/Desktop.js";
 import { App, GLib, Gdk, Utils } from "./imports.js";
 import Launcher from "./launcher/Launcher.js";
-import Confirm from "./misc/Confirm.js";
 import NotificationPopups from "./notifications/NotificationPopups.js";
 import options from "./options.js";
+import Confirm from "./widgets/Confirm.js";
 
 // Gdk monitors do not neccessarily have the same id as hyprland ones, so we use the monitor model to make sure
 // windows use the correct monitor even if the Gdk monitor has a different id from the hyprland one.

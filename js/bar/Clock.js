@@ -1,5 +1,5 @@
 import { App, Utils, Widget } from "../imports.js";
-import ClockLabel from "../misc/ClockLabel.js";
+import ClockLabel from "../widgets/ClockLabel.js";
 
 export default () =>
   Widget.Button({

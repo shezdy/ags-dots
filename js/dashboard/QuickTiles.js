@@ -1,7 +1,7 @@
 import icons from "../icons.js";
 import { App, Hyprland, Widget } from "../imports.js";
-import FontIcon from "../misc/FontIcon.js";
 import Brightness from "../services/Brightness.js";
+import FontIcon from "../widgets/FontIcon.js";
 
 const BrightnessPreset = (brightness, text) =>
   Widget.Button({

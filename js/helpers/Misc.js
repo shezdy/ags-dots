@@ -1,5 +1,5 @@
-import icons from "./icons.js";
-import { App, Applications, Hyprland, Utils } from "./imports.js";
+import icons from "../icons.js";
+import { App, Applications, Hyprland, Utils } from "../imports.js";
 
 export const ASSET_DIR = `${App.configDir}/assets`;
 

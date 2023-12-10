@@ -1,7 +1,7 @@
 import icons from "../icons.js";
 import { App, Applications, Gdk, Gtk, Variable, Widget } from "../imports.js";
-import PopupWindow from "../misc/PopupWindow.js";
 import options from "../options.js";
+import PopupWindow from "../widgets/PopupWindow.js";
 import AppItem from "./AppItem.js";
 
 const WINDOW_NAME = "launcher";

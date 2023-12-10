@@ -1,9 +1,9 @@
-import { execSh } from "../helpers.js";
+import { execSh } from "../helpers/Misc.js";
 import icons from "../icons.js";
 import { App, Variable, Widget } from "../imports.js";
-import Avatar from "../misc/Avatar.js";
-import { ConfirmAction } from "../misc/Confirm.js";
 import options from "../options.js";
+import Avatar from "../widgets/Avatar.js";
+import { ConfirmAction } from "../widgets/Confirm.js";
 
 const uptime = Variable("", {
   poll: [

@@ -11,7 +11,7 @@ const Popups = (parent) => {
 
     if (map.get(id)._hovered.value && !force) return;
 
-    if (map.size - 1 === 0) parent.reveal_child = false;
+    if (map.size - 1 === 0) parent.revealChild = false;
 
     Utils.timeout(200, () => {
       map.get(id)?.destroy();
@@ -31,7 +31,7 @@ const Popups = (parent) => {
     map.set(id, Notification(n));
     box.children = Array.from(map.values()).reverse();
     Utils.timeout(10, () => {
-      parent.reveal_child = true;
+      parent.revealChild = true;
     });
   };
 

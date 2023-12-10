@@ -11,7 +11,7 @@ const Arrow = (revealer, direction, items) => {
 
   const animate = () => {
     const t = options.transition.duration / 20;
-    const step = revealer.reveal_child ? 10 : -10;
+    const step = revealer.revealChild ? 10 : -10;
     for (let i = 0; i < 18; ++i) {
       Utils.timeout(t * i, () => {
         deg += step;
@@ -28,13 +28,13 @@ const Arrow = (revealer, direction, items) => {
       [
         items,
         (btn) => {
-          btn.tooltip_text = `${items.value} Items`;
+          btn.tooltipText = `${items.value} Items`;
         },
       ],
     ],
-    on_clicked: () => {
+    onClicked: () => {
       animate();
-      revealer.reveal_child = !revealer.reveal_child;
+      revealer.revealChild = !revealer.revealChild;
     },
     child: icon,
   });

@@ -1,8 +1,8 @@
 import icons from "../icons.js";
 import { App, Hyprland } from "../imports.js";
-import FontIcon from "../misc/FontIcon.js";
-import { Arrow } from "./ToggleButton.js";
-import { Menu } from "./ToggleButton.js";
+import FontIcon from "../widgets/FontIcon.js";
+import { Arrow } from "../widgets/ToggleButton.js";
+import { Menu } from "../widgets/ToggleButton.js";
 import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
 import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
@@ -28,7 +28,7 @@ function getAudioTypeIcon(icon) {
 const VolumeIndicator = (type = "speaker") =>
   Widget.Button({
     onClicked: () => {
-      if (Audio[type]) Audio[type].is_muted = !Audio[type].is_muted;
+      if (Audio[type]) Audio[type].isMuted = !Audio[type].isMuted;
     },
     child: Widget.Icon({
       connections: [
@@ -46,9 +46,7 @@ const VolumeIndicator = (type = "speaker") =>
                 ? getAudioTypeIcon(Audio[type]?.icon_name || "")
                 : icons.audio.mic.high;
 
-            icon.tooltipText = `Volume ${Math.floor(
-              Audio[type].volume * 100
-            )}%`;
+            icon.tooltipText = `Volume ${Math.ceil(Audio[type].volume * 100)}%`;
           },
           `${type}-changed`,
         ],
@@ -157,7 +155,7 @@ const MixerItem = (stream) =>
           [
             stream,
             (l) => {
-              l.label = `${Math.floor(stream.volume * 100)}%`;
+              l.label = `${Math.ceil(stream.volume * 100)}%`;
             },
           ],
         ],

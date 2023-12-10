@@ -1,8 +1,8 @@
 import icons from "../icons.js";
 import { Widget } from "../imports.js";
-import FontIcon from "../misc/FontIcon.js";
 import Brightness from "../services/Brightness.js";
-import { Arrow, Menu } from "./ToggleButton.js";
+import FontIcon from "../widgets/FontIcon.js";
+import { Arrow, Menu } from "../widgets/ToggleButton.js";
 
 const setBrightness = (brightness) => {
   Brightness.screens = brightness;

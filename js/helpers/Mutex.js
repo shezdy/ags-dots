@@ -15,7 +15,6 @@ export default class Mutex {
 
   /**
    * enqueue a function to be run exclusively.
-   *
    * @param callback function to be run exclusively
    * @returns the return value of "callback"
    */

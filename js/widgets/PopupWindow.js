@@ -33,7 +33,7 @@ class PopupWindow extends AgsWindow {
         [
           App,
           (_, wname, visible) => {
-            if (wname === name) this.revealer.reveal_child = visible;
+            if (wname === name) this.revealer.revealChild = visible;
           },
         ],
       ],
