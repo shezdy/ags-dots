@@ -1,12 +1,14 @@
 import { focusClient, getHyprlandClientIcon } from "../helpers.js";
 import { Gtk, Hyprland, Variable, Widget } from "../imports.js";
+import Mutex from "../misc/Mutex.js";
 
+const mutex = new Mutex();
 const selectedIndex = Variable(1);
 let clients = [];
 let submap = false;
 let ignoreCycle = true;
 
-const syncClientsAndShow = () => {
+const syncClientsAndShow = async () => {
   // Not using Hyprland.clients because focusHistoryID will be out of date
   Hyprland.sendMessage("j/clients")
     .then((out) => {
@@ -19,42 +21,37 @@ const syncClientsAndShow = () => {
       selectedIndex.value = 1;
       altTabBox.parent.visible = true;
       submap = true;
+      ignoreCycle = true;
     })
     .catch(console.error);
 };
 
-Hyprland.connect("submap", (_, name) => {
-  if (name === "alttab") syncClientsAndShow();
-});
-
-const cycleNext = () => {
-  if (selectedIndex.value >= clients.length - 1) selectedIndex.value = 0;
-  else selectedIndex.value += 1;
-};
-globalThis.cycleNext = cycleNext; // for inside the submap
-
-// ignore the first press, but continuously cycle if held down.
-// need to do it this way because if selectedIndex starts at 0 and
-// the the first cycle is allowed, there is a flicker right as the layer is shown.
-// there is probably a better way to fix it but this works for now.
-const initialAltTab = () => {
-  if (!submap) return;
-  if (ignoreCycle) {
-    ignoreCycle = false;
-    return;
-  }
-  cycleNext();
-};
-globalThis.initialAltTab = initialAltTab; // for initial press
-
-Hyprland.connect("submap", (_, name) => {
-  if (submap && name === "") {
+const focusClientAndHide = async (submapName) => {
+  if (submap && submapName === "") {
     submap = false;
-    ignoreCycle = true;
     altTabBox.parent.visible = false;
     focusClient(clients[selectedIndex.value], true);
   }
+};
+
+Hyprland.connect("submap", (_self, submapName) => {
+  if (submapName === "alttab") mutex.runExclusive(syncClientsAndShow);
+  else mutex.runExclusive(focusClientAndHide, submapName);
 });
+
+const cycleNext = (isInitialPress = false) => {
+  mutex.runExclusive(() => {
+    if (!submap) return;
+    if (ignoreCycle && isInitialPress) {
+      // ignore the first press, but continuously cycle if held down.
+      ignoreCycle = false;
+      return;
+    }
+    if (selectedIndex.value >= clients.length - 1) selectedIndex.value = 0;
+    else selectedIndex.value += 1;
+  });
+};
+globalThis.cycleNext = cycleNext;
 
 const TaskBox = (client, index) => {
   return Widget.Button({
