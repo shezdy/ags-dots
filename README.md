@@ -26,7 +26,7 @@ bind = $mainMod, c, exec, ags -r "minimizeFocused()"
 bind = $mainMod CONTROL, c, exec, ags -r "restoreClient()"
 
 layerrule = noanim, alttab
-binde = ALT, Tab, exec, ags -r "initialAltTab()"
+binde = ALT, Tab, exec, ags -r "cycleNext(true)"
 bind = ALT, Tab, submap, alttab
 submap = alttab
     binde = ALT, Tab, exec, ags -r "cycleNext()"
