@@ -72,6 +72,9 @@ const TaskBox = (client, index) => {
         }),
       ],
     }),
+    onClicked: () => {
+      selectedIndex.value = index;
+    },
     connections: [
       [
         selectedIndex,
@@ -92,8 +95,6 @@ const TaskBox = (client, index) => {
 const AltTabFlowbox = (tasks, colNum) =>
   Widget.FlowBox({
     className: "app-list",
-    vpack: "start",
-    hpack: "start",
     minChildrenPerLine: colNum,
     maxChildrenPerLine: colNum,
     selectionMode: Gtk.SelectionMode.NONE,
