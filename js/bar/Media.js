@@ -1,7 +1,33 @@
 import { ASSET_DIR } from "../helpers/Misc.js";
 import { Hyprland, Mpris, Widget } from "../imports.js";
+import options from "../options.js";
 
-const MediaBox = ({ player }) => {
+const getPlayer = () => {
+  const playerList = Mpris.players;
+  if (playerList.length === 0) return null;
+
+  const playerSet = new Set();
+  for (const whitelistName of options.mpris.whitelist) {
+    if (whitelistName === "%any") {
+      // add all players, ignoring ones in the blacklist
+      for (const player of playerList) {
+        if (!options.mpris.blacklist.includes(player.name))
+          playerSet.add(player);
+      }
+      continue;
+    }
+
+    for (const player of playerList) {
+      if (player.name === whitelistName) {
+        playerSet.delete(player);
+        playerSet.add(player);
+      }
+    }
+  }
+  return playerSet.values().next().value;
+};
+
+const MediaBox = (player) => {
   return Widget.Box({
     className: "media",
     connections: [
@@ -10,8 +36,14 @@ const MediaBox = ({ player }) => {
         (self) => {
           self.children = [
             Widget.Button({
-              onClicked: () =>
-                Hyprland.sendMessage("dispatch focuswindow Spotify"),
+              onClicked: () => {
+                const name = player.name;
+                if (!name || name.length === 0) return;
+                const regex = `[${name[0].toUpperCase()}${name[0].toLowerCase()}]${name.slice(
+                  1
+                )}`;
+                Hyprland.sendMessage(`dispatch focuswindow ${regex}`);
+              },
               className: "cover",
               child: Widget.Box({
                 className: "image",
@@ -52,7 +84,14 @@ const MediaBox = ({ player }) => {
                       [
                         player,
                         (self) => {
-                          self.label = `${player.trackArtists.join(", ")}`;
+                          const artists = player.trackArtists.join(", ");
+                          if (!artists || artists === "Unknown artist") {
+                            self.label = `${player.name} `;
+                          } else {
+                            if (artists.length > 40)
+                              self.label = `${artists.slice(0, 37)}... `;
+                            else self.label = `${artists} `;
+                          }
                         },
                         "notify::track-artists",
                       ],
@@ -64,7 +103,10 @@ const MediaBox = ({ player }) => {
                       [
                         player,
                         (self) => {
-                          self.label = ` ${player.trackTitle}`;
+                          const title = player.trackTitle;
+                          if (title.length > 40)
+                            self.label = `${title.slice(0, 37)}...`;
+                          else self.label = `${title}`;
                         },
                         "notify::track-title",
                       ],
@@ -87,11 +129,12 @@ export default () => {
       [
         Mpris,
         (self) => {
-          const player = Mpris.getPlayer("spotify");
-          self.visible = player;
-          // mpris player can be undefined
-          if (!player) return;
-          self.children = [MediaBox({ player })];
+          const player = getPlayer();
+          if (!player) {
+            self.visible = false;
+            return;
+          }
+          self.children = [MediaBox(player)];
         },
         "notify::players",
       ],

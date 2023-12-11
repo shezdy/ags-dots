@@ -1,5 +1,14 @@
 export default {
   avatar: "/home/d/Pictures/art/b.png",
+  mpris: {
+    // the special name "%any" can be used to match any player not on the list
+    // players listed earlier will have more priority, so for example:
+    // ["spotify, "%any", "firefox"]
+    // will prioritize spotify and deprioritize firefox
+    whitelist: ["spotify"],
+    // players listed here will be ignored
+    blacklist: [],
+  },
   powermenu: {
     shutdown: "systemctl poweroff",
     reboot: "systemctl reboot",
