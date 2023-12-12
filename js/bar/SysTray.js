@@ -15,7 +15,6 @@ export default () =>
             .map((item) => {
               return Widget.Button({
                 child: Widget.Icon({
-                  size: 14,
                   binds: [["icon", item, "icon"]],
                 }),
                 onPrimaryClick: (_, event) => item.activate(event),

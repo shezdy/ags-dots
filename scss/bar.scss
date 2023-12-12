@@ -1,3 +1,4 @@
+$bar_height: 32px;
 $bar_spacing: 6px;
 $bar_margin_v: 5px;
 $bar_margin_h: 12px;
@@ -12,16 +13,14 @@ $bar_button_background_hover: false;
 }
 
 .bar {
+  min-height: $bar_height;
   background-color: $bg;
   color: $fg;
   padding: 0 $bar_margin_h;
-  * {
-    font-family: $font;
-    font-weight: 600;
-    font-size: $font_size;
-  }
 
   label {
+    font-family: $font;
+    font-size: $font_size;
     font-weight: 700;
   }
 
@@ -59,7 +58,7 @@ $bar_button_background_hover: false;
   }
   $ws_active_width: 26px;
   .workspaces {
-    margin: 4px 0;
+    margin: 0px 0;
 
     .ws-box {
       min-width: $ws_active_width * 6;
@@ -76,6 +75,7 @@ $bar_button_background_hover: false;
       animation: deactivate_padding $dur_short ease;
       .box {
         animation: deactivate_width $dur_short ease;
+        margin: calc(($bar_height - 24px) / 2) 0;
         border-radius: 1rem;
         min-height: 8px;
         min-width: 8px;
@@ -95,7 +95,6 @@ $bar_button_background_hover: false;
         animation: activate_padding calc($dur_short / 2) ease;
         transition: padding calc($dur_short / 2);
         padding: 8px 0px;
-        color: $blue;
         .box {
           animation: activate_width $dur_short ease;
           min-width: $ws_active_width;
@@ -139,28 +138,21 @@ $bar_button_background_hover: false;
     margin-right: calc($bar_spacing / 2);
   }
   .systray {
-    margin-left: $bar_spacing;
-    margin-right: calc($bar_spacing);
+    margin: 0 calc($bar_spacing/2) 0 $bar_spacing;
     button {
-      margin: $bar_margin_v 0px;
-      padding: 2px 2px;
-      border-radius: 2em;
-      transition: all $dur_med $md3_emph_decel;
-      transition: all $dur_med $md3_emph_decel;
-      &:hover {
-        box-shadow: inset 0 0 0 $border_width $border_color;
-        background-color: $hover;
-        color: $hover_fg;
+      @include button($flat: true);
+
+      $icon_size: 14px;
+      $button_size: $icon_size + $bar_spacing;
+      image {
+        font-size: $icon_size;
       }
+      padding: 0 calc($bar_spacing / 2);
+      margin: calc(($bar_height - $button_size) / 2) 0;
     }
   }
 
   .media {
-    all: unset;
-    * {
-      background-color: transparent;
-    }
-
     .text {
       margin: $bar_margin_v 0px;
       padding: 0px $bar_spacing - 2px 0px $bar_spacing;
@@ -174,9 +166,10 @@ $bar_button_background_hover: false;
     }
 
     *.cover {
-      min-width: 14px;
+      $cover_size: 14px;
+      min-width: $cover_size;
       min-height: 1px;
-      padding: 9px 0px;
+      padding: calc(($bar_height - $cover_size) / 2) 0;
       margin-right: 2px;
       .image {
         border-radius: 2px;
@@ -210,7 +203,7 @@ $bar_button_background_hover: false;
   .volume {
     all: unset;
     color: $green;
-    margin: 5px 0px;
+    margin: $bar_margin_v 0;
     padding: 0px $bar_spacing;
     border-radius: 1em;
     image {
