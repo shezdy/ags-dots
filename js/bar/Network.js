@@ -24,10 +24,8 @@ const WiredIndicator = () =>
           (self) => {
             const status = Network.connectivity;
             if (status === "full") self.icon = icons.network.wired.connected;
-            else if (status === "portal")
-              self.icon = icons.network.wired.portal;
-            else if (status === "limited")
-              self.icon = icons.network.wired.limited;
+            else if (status === "portal") self.icon = icons.network.wired.portal;
+            else if (status === "limited") self.icon = icons.network.wired.limited;
             else self.icon = icons.network.wired.disconnected;
           },
           "notify::connectivity",

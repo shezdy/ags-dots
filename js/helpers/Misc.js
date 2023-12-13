@@ -4,14 +4,12 @@ import { App, Applications, Hyprland, Utils } from "../imports.js";
 export const ASSET_DIR = `${App.configDir}/assets`;
 
 export function execSh(cmd) {
-  Utils.execAsync(["sh", "-c", `${cmd}`]).catch((error) =>
-    console.error(`execSh error: ${error}`)
-  );
+  Utils.execAsync(["sh", "-c", `${cmd}`]).catch((error) => console.error(`execSh error: ${error}`));
 }
 
 export function execBash(cmd) {
   Utils.execAsync(["bash", "-c", `${cmd}`]).catch((error) =>
-    console.error(`execBash error: ${error}`)
+    console.error(`execBash error: ${error}`),
   );
 }
 
@@ -36,9 +34,7 @@ export function minimizeFocused() {
   Hyprland.sendMessage("j/activewindow").then((out) => {
     const client = JSON.parse(out);
     if (client.workspace.id > 0)
-      Hyprland.sendMessage(
-        `dispatch movetoworkspacesilent special:m${client.workspace.id}`
-      );
+      Hyprland.sendMessage(`dispatch movetoworkspacesilent special:m${client.workspace.id}`);
   });
 }
 // global so it can be called from hyprland keybinds
@@ -48,13 +44,9 @@ export function restoreClient() {
   Hyprland.sendMessage("j/activeworkspace")
     .then((out) => {
       const id = JSON.parse(out).id;
-      const client = Hyprland.clients.find(
-        (c) => c.workspace.name === `special:m${id}`
-      );
+      const client = Hyprland.clients.find((c) => c.workspace.name === `special:m${id}`);
       if (client) {
-        Hyprland.sendMessage(
-          `dispatch movetoworkspacesilent ${id},address:${client.address}`
-        );
+        Hyprland.sendMessage(`dispatch movetoworkspacesilent ${id},address:${client.address}`);
       }
     })
     .catch(console.error);
@@ -75,12 +67,12 @@ export function focusClient(client, cursorWarp = false) {
     Hyprland.sendMessage(
       `dispatch movetoworkspace ${
         client.workspace.name.match(/\d+$/)[0] // match a number at the end of the workspace name
-      },address:${client.address}`
+      },address:${client.address}`,
     );
   } else if (Hyprland.getWorkspace(client.workspace.id).hasfullscreen) {
     // if there is a fs window on the workspace it needs to become the new fs window
     const fsClient = Hyprland.clients.find(
-      (c) => c.workspace.id === client.workspace.id && c.fullscreen === true
+      (c) => c.workspace.id === client.workspace.id && c.fullscreen === true,
     );
     if (fsClient && fsClient.address !== client.address) {
       const mode = fsClient.fullscreenMode;
@@ -94,9 +86,7 @@ export function focusClient(client, cursorWarp = false) {
   } else {
     Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
     if (client.floating === true) {
-      Hyprland.sendMessage(
-        `dispatch alterzorder top,address:${client.address}`
-      );
+      Hyprland.sendMessage(`dispatch alterzorder top,address:${client.address}`);
     }
   }
   if (!cursorWarp) {
@@ -115,17 +105,15 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
   if (client.workspace.id > 0) {
     if (client.address === Hyprland.active.client.address)
       Hyprland.sendMessage(
-        `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`
+        `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`,
       );
     else if (Hyprland.getWorkspace(client.workspace.id).hasfullscreen) {
       const fsClient = Hyprland.clients.find(
-        (c) => c.workspace.id === client.workspace.id && c.fullscreen === true
+        (c) => c.workspace.id === client.workspace.id && c.fullscreen === true,
       );
       if (fsClient) {
         const mode = fsClient.fullscreenMode;
-        Hyprland.sendMessage(
-          `dispatch focuswindow address:${fsClient.address}`
-        );
+        Hyprland.sendMessage(`dispatch focuswindow address:${fsClient.address}`);
         Hyprland.sendMessage("dispatch fullscreen");
         Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
         Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
@@ -133,16 +121,14 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
     } else {
       Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
       if (client.floating === true) {
-        Hyprland.sendMessage(
-          `dispatch alterzorder top,address:${client.address}`
-        );
+        Hyprland.sendMessage(`dispatch alterzorder top,address:${client.address}`);
       }
     }
   } else {
     Hyprland.sendMessage(
       `dispatch movetoworkspacesilent ${
         client.workspace.name.match(/\d+$/)[0] // get workspace number at the end of the special workspace name
-      },address:${client.address}`
+      },address:${client.address}`,
     );
   }
   if (!cursorWarp) {

@@ -1,12 +1,16 @@
 # ags-dots
+
 ![preview](https://github.com/ddmetz/ags-dots/assets/77217897/6cae17a2-4c45-41d7-8953-b9162ceb9cf4)
 
 ## Dependencies
+
 - [ags](https://github.com/Aylur/ags)
 - [hyprland](https://github.com/hyprwm/Hyprland)
 - dart-sass
 - nerdfonts
+
 ### Optional
+
 - playerctl
 - gvfs
 - brightnessctl
@@ -15,6 +19,7 @@
 - nm-connection-editor
 
 ## Hyprland
+
 I use [split-monitor-workspaces](https://github.com/Duckonaut/split-monitor-workspaces) so you may need to make some modifications to the bar if you don't use it.
 
 Some stuff you might want in your hyprland.conf:
@@ -30,7 +35,7 @@ binde = ALT, Tab, exec, ags -r "cycleNext(true)"
 bind = ALT, Tab, submap, alttab
 submap = alttab
     binde = ALT, Tab, exec, ags -r "cycleNext()"
-    bindirt = , ALT_L, submap, reset 
+    bindirt = , ALT_L, submap, reset
 submap = reset
 
 ```

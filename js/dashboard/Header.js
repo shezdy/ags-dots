@@ -31,10 +31,7 @@ const PowerMenu = (event) =>
           ConfirmAction(() => execSh(options.powermenu.suspend));
         },
         child: Widget.Box({
-          children: [
-            Widget.Icon(icons.powermenu.sleep),
-            Widget.Label("  Suspend"),
-          ],
+          children: [Widget.Icon(icons.powermenu.sleep), Widget.Label("  Suspend")],
         }),
       }),
       Widget.MenuItem({
@@ -43,10 +40,7 @@ const PowerMenu = (event) =>
           ConfirmAction(() => execSh(options.powermenu.reboot));
         },
         child: Widget.Box({
-          children: [
-            Widget.Icon(icons.powermenu.reboot),
-            Widget.Label("  Reboot"),
-          ],
+          children: [Widget.Icon(icons.powermenu.reboot), Widget.Label("  Reboot")],
         }),
       }),
       Widget.MenuItem({
@@ -55,10 +49,7 @@ const PowerMenu = (event) =>
           ConfirmAction(() => execSh(options.powermenu.shutdown));
         },
         child: Widget.Box({
-          children: [
-            Widget.Icon(icons.powermenu.shutdown),
-            Widget.Label("  Shutdown"),
-          ],
+          children: [Widget.Icon(icons.powermenu.shutdown), Widget.Label("  Shutdown")],
         }),
       }),
     ],

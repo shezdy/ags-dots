@@ -8,10 +8,7 @@ export default () =>
         SystemTray,
         (self) => {
           self.children = SystemTray.items
-            .filter(
-              (item) =>
-                item.title !== "spotify" && item.title !== "opensnitch-ui"
-            )
+            .filter((item) => item.title !== "spotify" && item.title !== "opensnitch-ui")
             .map((item) => {
               return Widget.Button({
                 child: Widget.Icon({

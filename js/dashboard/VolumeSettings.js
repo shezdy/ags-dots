@@ -229,14 +229,7 @@ export const SinkSelector = () =>
     content: [
       Widget.Box({
         vertical: true,
-        binds: [
-          [
-            "children",
-            Audio,
-            "speakers",
-            (s) => s.map((s) => DeviceItem(s, true)),
-          ],
-        ],
+        binds: [["children", Audio, "speakers", (s) => s.map((s) => DeviceItem(s, true))]],
       }),
       Widget.Separator(),
       SettingsButton(),
@@ -251,14 +244,7 @@ export const SourceSelector = () =>
     content: [
       Widget.Box({
         vertical: true,
-        binds: [
-          [
-            "children",
-            Audio,
-            "microphones",
-            (s) => s.map((s) => DeviceItem(s, false)),
-          ],
-        ],
+        binds: [["children", Audio, "microphones", (s) => s.map((s) => DeviceItem(s, false))]],
       }),
       Widget.Separator(),
       Widget.Button({
@@ -268,10 +254,7 @@ export const SourceSelector = () =>
         },
         hexpand: true,
         child: Widget.Box({
-          children: [
-            Widget.Icon(icons.audio.generic),
-            Widget.Label("NoiseTorch"),
-          ],
+          children: [Widget.Icon(icons.audio.generic), Widget.Label("NoiseTorch")],
         }),
       }),
       SettingsButton(),

@@ -3,8 +3,7 @@ $scrollbar_width: 10px;
 
 window#launcher .launcher {
   @include floating_widget;
-  padding: $padding * 2 ($padding * 2 - $scrollbar_width) $padding * 2 $padding *
-    2;
+  padding: $padding * 2 ($padding * 2 - $scrollbar_width) $padding * 2 $padding * 2;
 
   entry {
     @include button;

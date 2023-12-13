@@ -27,10 +27,7 @@ export const Arrow = (name, activate) => {
         [
           opened,
           (icon) => {
-            if (
-              (opened.value === name && !iconOpened) ||
-              (opened.value !== name && iconOpened)
-            ) {
+            if ((opened.value === name && !iconOpened) || (opened.value !== name && iconOpened)) {
               const step = opened.value === name ? 10 : -10;
               iconOpened = !iconOpened;
               for (let i = 0; i < 9; ++i) {
@@ -65,10 +62,7 @@ export const IconArrow = (name, activate, icon) => {
         [
           opened,
           (icon) => {
-            if (
-              (opened.value === name && !iconOpened) ||
-              (opened.value !== name && iconOpened)
-            ) {
+            if ((opened.value === name && !iconOpened) || (opened.value !== name && iconOpened)) {
               iconOpened = !iconOpened;
               icon.toggleClassName("arrow-opened", iconOpened);
             }
@@ -163,11 +157,7 @@ export const Menu = ({ name, icon, title, content }) =>
  * @param {() => void} o.toggle
  * @param {[import('gi://GObject').GObject.Object, () => boolean]} o.connection
  */
-export const SimpleToggleButton = ({
-  icon,
-  toggle,
-  connection: [service, condition],
-}) =>
+export const SimpleToggleButton = ({ icon, toggle, connection: [service, condition] }) =>
   Widget.Button({
     className: "simple-toggle",
     connections: [

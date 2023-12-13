@@ -72,9 +72,7 @@ export const BrightnessMixer = (screen) =>
       Widget.Box({
         vertical: true,
         className: "mixer",
-        binds: [
-          ["children", Brightness, "screens", (s) => s.map(BrightnessScreen)],
-        ],
+        binds: [["children", Brightness, "screens", (s) => s.map(BrightnessScreen)]],
       }),
     ],
   });

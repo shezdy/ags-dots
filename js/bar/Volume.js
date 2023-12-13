@@ -17,7 +17,6 @@ export default () =>
       vpack: "center",
       children: [
         Widget.Icon({
-          // size: 13,
           className: "icon",
           connections: [
             [
@@ -50,8 +49,7 @@ export default () =>
                 // else if (vol < 10) self.label = `󰕾 0${vol}%`;
                 // else if (vol < 100) self.label = `󰕾 ${vol}%`;
                 // else self.label = `󰕾 ${vol}`;
-                if (vol <= 0 || Audio.speaker.stream.isMuted)
-                  self.label = "---";
+                if (vol <= 0 || Audio.speaker.stream.isMuted) self.label = "---";
                 else if (vol < 10) self.label = `0${vol}%`;
                 else if (vol < 100) self.label = `${vol}%`;
                 else self.label = `${vol}`;

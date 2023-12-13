@@ -9,20 +9,16 @@ export default (monitor) => {
         child: Widget.Box({
           homogeneous: true,
           className: "ws-box",
-          children: Array.from(
-            { length: 6 },
-            (_, i) => i + 1 + monitor * 6
-          ).map((i) =>
+          children: Array.from({ length: 6 }, (_, i) => i + 1 + monitor * 6).map((i) =>
             Widget.Button({
               properties: [["i", i]],
               onClicked: () => Hyprland.sendMessage(`dispatch workspace ${i}`),
-              onSecondaryClick: () =>
-                Hyprland.sendMessage(`dispatch movetoworkspacesilent ${i}`),
+              onSecondaryClick: () => Hyprland.sendMessage(`dispatch movetoworkspacesilent ${i}`),
               child: Widget.Box({
                 className: "box",
                 hpack: "center",
               }),
-            })
+            }),
           ),
           connections: [
             [
@@ -32,7 +28,7 @@ export default (monitor) => {
                   const id = i + 1 + monitor * 6;
                   btn.toggleClassName(
                     "active",
-                    Hyprland.getMonitor(monitor)?.activeWorkspace.id === id
+                    Hyprland.getMonitor(monitor)?.activeWorkspace.id === id,
                   );
                   let occupied = Hyprland.getWorkspace(id)?.windows > 0;
                   if (!occupied) {

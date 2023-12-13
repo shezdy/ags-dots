@@ -1,8 +1,4 @@
-import {
-  focusClientOrMinimize,
-  fullscreenToggle,
-  getHyprlandClientIcon,
-} from "../helpers/Misc.js";
+import { focusClientOrMinimize, fullscreenToggle, getHyprlandClientIcon } from "../helpers/Misc.js";
 import { Hyprland, Utils, Variable, Widget } from "../imports.js";
 
 const clientMap = Variable(new Map()); // maintain consistent order
@@ -29,8 +25,7 @@ const TaskButton = (client) => {
     onClicked: () => {
       focusClientOrMinimize(client);
     },
-    onMiddleClick: () =>
-      Hyprland.sendMessage(`dispatch closewindow address:${client.address}`),
+    onMiddleClick: () => Hyprland.sendMessage(`dispatch closewindow address:${client.address}`),
     onSecondaryClick: () => fullscreenToggle(client, 1, false),
     hexpand: true,
     child: Widget.Box({
@@ -51,8 +46,8 @@ const TaskButton = (client) => {
       client.workspace.id <= 0
         ? "minimized"
         : Hyprland.active.client.address === client.address
-        ? "active"
-        : "",
+          ? "active"
+          : "",
     properties: [
       ["address", client.address],
       ["initialTitle", client.initialTitle],
@@ -68,8 +63,7 @@ export default (monitor) => {
     const tasks = [];
     for (const client of clientMap.value.values()) {
       if (
-        (client.workspace.id === ws ||
-          client.workspace.name === `special:m${ws}`) &&
+        (client.workspace.id === ws || client.workspace.name === `special:m${ws}`) &&
         client.title !== ""
       ) {
         tasks.push(TaskButton(client));

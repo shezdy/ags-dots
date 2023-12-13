@@ -11,8 +11,7 @@ const getPlayer = () => {
     if (whitelistName === "%any") {
       // add all players, ignoring ones in the blacklist
       for (const player of playerList) {
-        if (!options.mpris.blacklist.includes(player.name))
-          playerSet.add(player);
+        if (!options.mpris.blacklist.includes(player.name)) playerSet.add(player);
       }
       continue;
     }
@@ -39,9 +38,7 @@ const MediaBox = (player) => {
               onClicked: () => {
                 const name = player.name;
                 if (!name || name.length === 0) return;
-                const regex = `[${name[0].toUpperCase()}${name[0].toLowerCase()}]${name.slice(
-                  1
-                )}`;
+                const regex = `[${name[0].toUpperCase()}${name[0].toLowerCase()}]${name.slice(1)}`;
                 Hyprland.sendMessage(`dispatch focuswindow ${regex}`);
               },
               className: "cover",
@@ -88,8 +85,7 @@ const MediaBox = (player) => {
                           if (!artists || artists === "Unknown artist") {
                             self.label = `${player.name} `;
                           } else {
-                            if (artists.length > 40)
-                              self.label = `${artists.slice(0, 37)}... `;
+                            if (artists.length > 40) self.label = `${artists.slice(0, 37)}... `;
                             else self.label = `${artists} `;
                           }
                         },
@@ -104,8 +100,7 @@ const MediaBox = (player) => {
                         player,
                         (self) => {
                           const title = player.trackTitle;
-                          if (title.length > 40)
-                            self.label = `${title.slice(0, 37)}...`;
+                          if (title.length > 40) self.label = `${title.slice(0, 37)}...`;
                           else self.label = `${title}`;
                         },
                         "notify::track-title",

@@ -50,9 +50,7 @@ const Dashboard = () =>
             vertical: true,
             setup: (self) => {
               if (Brightness.screens) {
-                sliderRows.push(
-                  Row([BrightnessSliderRow()], [BrightnessMixer()])
-                );
+                sliderRows.push(Row([BrightnessSliderRow()], [BrightnessMixer()]));
               }
               self.children = sliderRows;
             },

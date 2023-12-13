@@ -79,8 +79,7 @@ const TaskBox = (client, index) => {
       [
         selectedIndex,
         (self) => {
-          self.className =
-            selectedIndex.value === index ? "selected client" : "client";
+          self.className = selectedIndex.value === index ? "selected client" : "client";
         },
       ],
     ],

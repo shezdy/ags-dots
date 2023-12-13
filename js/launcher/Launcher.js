@@ -31,7 +31,7 @@ const Applauncher = () => {
       setup: (self) => {
         options.launcher.pins.map((term) => {
           const app = Applications.list.find(
-            (app) => app.name.toLowerCase() === term.toLowerCase()
+            (app) => app.name.toLowerCase() === term.toLowerCase(),
           );
           if (!app) {
             console.warn(`Launcher pinned app "${term}" not found`);

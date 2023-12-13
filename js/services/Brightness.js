@@ -11,7 +11,7 @@ class Screen extends Service {
       {
         name: ["string", "rw"],
         brightness: ["float", "rw"],
-      }
+      },
     );
   }
 
@@ -55,7 +55,7 @@ class Brightness extends Service {
       {},
       {
         screens: ["jsobject", "rw"],
-      }
+      },
     );
   }
 
@@ -68,10 +68,7 @@ class Brightness extends Service {
           for (const screen of out.split("\n")) {
             const info = screen.split(",");
             if (!this.#screens.get(info[0]))
-              this.#screens.set(
-                info[0],
-                new Screen(info[0], info[2] / info[4])
-              );
+              this.#screens.set(info[0], new Screen(info[0], info[2] / info[4]));
           }
         })
         .catch(console.error);
@@ -104,9 +101,7 @@ class Brightness extends Service {
     try {
       this.#screens = new Map();
       if (out.trim() === "") {
-        console.log(
-          "Brightnessctl found no backlights, using fallback command."
-        );
+        console.log("Brightnessctl found no backlights, using fallback command.");
         this.#screens = undefined;
         return;
       }

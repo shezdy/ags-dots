@@ -31,9 +31,7 @@ function forMonitors(widget) {
     if (gdkMonitor !== undefined) {
       return widget(monitor.id, gdkMonitor);
     }
-    console.warn(
-      `Couldn't find Gdk monitor for Hyprland monitor ID ${monitor.id}.`
-    );
+    console.warn(`Couldn't find Gdk monitor for Hyprland monitor ID ${monitor.id}.`);
     return widget(monitor.id, monitor.id);
   });
 }

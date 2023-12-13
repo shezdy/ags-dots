@@ -83,9 +83,7 @@ export default (notification) => {
               Widget.Label({
                 className: "time",
                 vpack: "start",
-                label: GLib.DateTime.new_from_unix_local(
-                  notification.time
-                ).format("%H:%M"),
+                label: GLib.DateTime.new_from_unix_local(notification.time).format("%H:%M"),
               }),
               Widget.Button({
                 onHover: hover,
@@ -122,7 +120,7 @@ export default (notification) => {
             onClicked: () => notification.invoke(action.id),
             hexpand: true,
             child: Widget.Label(action.label),
-          })
+          }),
         ),
       }),
     }),

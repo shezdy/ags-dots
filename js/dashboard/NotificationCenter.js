@@ -14,10 +14,7 @@ const ClearButton = () =>
               "icon",
               Notifications,
               "notifications",
-              (n) =>
-                n.length > 0
-                  ? "user-trash-full-symbolic"
-                  : "user-trash-symbolic",
+              (n) => (n.length > 0 ? "user-trash-full-symbolic" : "user-trash-symbolic"),
             ],
           ],
         }),
@@ -28,10 +25,7 @@ const ClearButton = () =>
 const Header = () =>
   Widget.Box({
     className: "header",
-    children: [
-      Widget.Label({ label: "Notifications", hexpand: true, xalign: 0 }),
-      ClearButton(),
-    ],
+    children: [Widget.Label({ label: "Notifications", hexpand: true, xalign: 0 }), ClearButton()],
   });
 
 const NotificationList = () =>
@@ -42,9 +36,7 @@ const NotificationList = () =>
       [
         Notifications,
         (self) => {
-          self.children = Notifications.notifications
-            .reverse()
-            .map(Notification);
+          self.children = Notifications.notifications.reverse().map(Notification);
         },
       ],
     ],
@@ -82,9 +74,7 @@ export default () =>
           vertical: true,
           children: [NotificationList()],
         }),
-        binds: [
-          ["visible", Notifications, "notifications", (n) => n.length > 0],
-        ],
+        binds: [["visible", Notifications, "notifications", (n) => n.length > 0]],
       }),
     ],
   });

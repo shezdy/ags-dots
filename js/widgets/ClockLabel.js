@@ -1,10 +1,6 @@
 import { GLib, Widget } from "../imports.js";
 
-export default ({
-  format = "%a %d %b %H:%M",
-  interval = 5000,
-  ...props
-} = {}) =>
+export default ({ format = "%a %d %b %H:%M", interval = 5000, ...props } = {}) =>
   Widget.Label({
     className: "clock",
     ...props,
@@ -12,8 +8,7 @@ export default ({
       [
         interval,
         (self) => {
-          self.label =
-            GLib.DateTime.new_now_local().format(format) || "wrong format";
+          self.label = GLib.DateTime.new_now_local().format(format) || "wrong format";
         },
       ],
     ],

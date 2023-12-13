@@ -52,10 +52,6 @@ export default ({ children, direction = "left", items = Variable(0) }) => {
 
   return Widget.Box({
     vertical: direction === "up" || direction === "down",
-    children: [
-      posStart && revealer,
-      Arrow(revealer, direction, items),
-      posEnd && revealer,
-    ],
+    children: [posStart && revealer, Arrow(revealer, direction, items), posEnd && revealer],
   });
 };

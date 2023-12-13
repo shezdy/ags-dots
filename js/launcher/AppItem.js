@@ -12,9 +12,7 @@ export default (app) => {
   });
 
   const icon = Widget.Icon({
-    icon: Utils.lookUpIcon(app.icon_name || "")
-      ? app.icon_name || ""
-      : icons.apps.fallback,
+    icon: Utils.lookUpIcon(app.icon_name || "") ? app.icon_name || "" : icons.apps.fallback,
     size: 48,
   });
 
