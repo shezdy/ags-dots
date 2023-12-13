@@ -1,13 +1,13 @@
 # ags-dots
 
-![preview](https://github.com/ddmetz/ags-dots/assets/77217897/6cae17a2-4c45-41d7-8953-b9162ceb9cf4)
+![ags](https://github.com/ddmetz/ags-dots/assets/77217897/77f812a5-770c-4c10-a387-d8afb605d6b2)
 
 ## Dependencies
 
 - [ags](https://github.com/Aylur/ags)
 - [hyprland](https://github.com/hyprwm/Hyprland)
 - dart-sass
-- nerdfonts
+- a [nerdfont](https://www.nerdfonts.com/)
 
 ### Optional
 
