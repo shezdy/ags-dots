@@ -3,7 +3,26 @@ import {
   fullscreenToggle,
   getHyprlandClientIcon,
 } from "../helpers/Misc.js";
-import { Hyprland, Widget } from "../imports.js";
+import { Hyprland, Utils, Variable, Widget } from "../imports.js";
+
+const clientMap = Variable(new Map()); // maintain consistent order
+Utils.execAsync("hyprctl -j clients")
+  .then((out) => {
+    for (const client of JSON.parse(out)) {
+      clientMap.value.set(client.address, client);
+    }
+  })
+  .catch(console.error);
+
+Hyprland.connect("notify::clients", (self) => {
+  for (const client of self.clients) {
+    clientMap.value.set(client.address, client);
+  }
+  clientMap.emit("changed");
+});
+Hyprland.connect("client-removed", (_, address) => {
+  clientMap.value.delete(address);
+});
 
 const TaskButton = (client) => {
   return Widget.Button({
@@ -45,12 +64,12 @@ const TaskButton = (client) => {
 export default (monitor) => {
   const tasklist = (self) => {
     const ws = Hyprland.getMonitor(monitor)?.activeWorkspace.id;
+    if (!ws) return;
     const tasks = [];
-    for (const client of Hyprland.clients) {
+    for (const client of clientMap.value.values()) {
       if (
         (client.workspace.id === ws ||
           client.workspace.name === `special:m${ws}`) &&
-        client.monitor === monitor &&
         client.title !== ""
       ) {
         tasks.push(TaskButton(client));
@@ -67,7 +86,7 @@ export default (monitor) => {
       [Hyprland, tasklist, "notify::monitors"],
       [Hyprland.active.client, tasklist, "notify::title"],
       [Hyprland.active.client, tasklist, "notify::address"],
-      [Hyprland, tasklist, "notify::clients"],
+      [clientMap, tasklist, "changed"],
     ],
   });
 };
