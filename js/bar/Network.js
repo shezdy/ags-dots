@@ -1,5 +1,5 @@
 import icons from "../icons.js";
-import { Hyprland, Network, Widget } from "../imports.js";
+import { App, Network, Widget } from "../imports.js";
 
 const WifiIndicator = () =>
   Widget.Box({
@@ -15,7 +15,7 @@ const WifiIndicator = () =>
 
 const WiredIndicator = () =>
   Widget.Button({
-    onClicked: () => Hyprland.sendMessage("dispatch exec nm-connection-editor"),
+    onClicked: () => App.toggleWindow("dashboard"),
     child: Widget.Icon({
       className: "icon",
       connections: [

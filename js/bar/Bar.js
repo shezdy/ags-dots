@@ -1,4 +1,4 @@
-import { Widget } from "../imports.js";
+import { Widget, App, Audio } from "../imports.js";
 import Clock from "./Clock.js";
 import Media from "./Media.js";
 import Network from "./Network.js";
@@ -6,6 +6,28 @@ import SysTray from "./SysTray.js";
 import Tasklist from "./Tasklist.js";
 import Volume from "./Volume.js";
 import Workspaces from "./Workspaces.js";
+
+const SysIndicators = () => {
+  return Widget.Box({
+    className: "system-indicators",
+    children: [
+      Widget.EventBox({
+        className: "eventbox",
+        child: Widget.Box({
+          children: [Volume(), Network(), Clock()],
+        }),
+        connections: [
+          [
+            App,
+            (self, win, visible) => {
+              self.toggleClassName("active", win === "dashboard" && visible);
+            },
+          ],
+        ],
+      }),
+    ],
+  });
+};
 
 const Left = (monitor) =>
   Widget.Box({
@@ -23,7 +45,7 @@ const Right = () =>
   Widget.Box({
     className: "right",
     hpack: "end",
-    children: [SysTray(), Media(), Volume(), Network(), Clock()],
+    children: [SysTray(), Media(), SysIndicators()],
   });
 
 export default (monitor, gdkMonitor) =>

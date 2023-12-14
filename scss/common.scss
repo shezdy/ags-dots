@@ -10,11 +10,11 @@
 
 @mixin hover_lighten($amount: 0.3, $dur: $dur_med) {
   * {
-    transition: box-shadow $dur $md3_emph_decel;
+    transition: box-shadow $dur;
   }
   &:hover {
     * {
-      transition: box-shadow $dur $md3_emph_decel;
+      transition: box-shadow $dur;
       box-shadow: inset 0 0 0 10em rgba(255, 255, 255, $amount);
     }
   }
@@ -22,11 +22,11 @@
 
 @mixin hover_text($color, $amount: 5%, $dur: $dur_med) {
   * {
-    transition: color $dur $md3_emph_decel;
+    transition: color $dur;
   }
   &:hover {
     * {
-      transition: color $dur $md3_emph_decel;
+      transition: color $dur;
       color: lighten($color, $amount);
     }
   }

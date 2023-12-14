@@ -48,8 +48,8 @@ $hover_fg: $fg;
 $accent_fg: black;
 $accent: $purple;
 $active_gradient: linear-gradient(to right, $accent, lighten($accent, 6%));
-$font_size: 13px;
-$font: "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+$font_size: 10pt;
+$bar_font: "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
 $sans_font: "Roboto", sans-serif;
 $mono_font: "CaskaydiaCove Nerd Font Mono", monospace;
 
@@ -67,7 +67,7 @@ $md3_emph_accel: cubic-bezier(0.3, 0, 0.8, 0.15);
   margin: 0;
   border: 0;
   font-family: $sans_font;
-  font-size: 13px;
+  font-size: $font_size;
 }
 
 window {
