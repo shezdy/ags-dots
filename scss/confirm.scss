@@ -1,22 +1,23 @@
 window#confirm {
-  .shade {
-    background-color: transparentize($color: #000000, $amount: 0.3);
-  }
-
   .confirm {
     @include floating_widget;
 
-    padding: 0 32px;
+    min-width: 250px;
+
     * {
-      font-size: 1.5rem;
       font-family: $sans_font;
       margin: calc($spacing/2);
     }
 
+    .desc {
+      font-size: 1.4rem;
+    }
+
     button {
-      @include button($flat: false);
-      margin-top: 0;
-      padding: 0 $padding * 2;
+      @include button($flat: true, $hoverable: false, $transition_dur: 0);
+      label {
+        font-size: 1.3rem;
+      }
     }
   }
 }

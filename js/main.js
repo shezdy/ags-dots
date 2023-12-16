@@ -6,6 +6,7 @@ import { App, GLib, Gdk, Utils } from "./imports.js";
 import Launcher from "./launcher/Launcher.js";
 import NotificationPopups from "./notifications/NotificationPopups.js";
 import options from "./options.js";
+import PowerMenu from "./powermenu/PowerMenu.js";
 import Confirm from "./widgets/Confirm.js";
 
 // Gdk monitors do not neccessarily have the same id as hyprland ones, so we use the monitor model to make sure
@@ -64,6 +65,7 @@ export default {
     NotificationPopups(),
     Dashboard(),
     Launcher(),
+    PowerMenu(),
     Confirm(),
   ].flat(),
   closeWindowDelay: {

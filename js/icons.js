@@ -1,7 +1,6 @@
 export default {
   settings: "emblem-system-symbolic",
   tick: "object-select-symbolic",
-  lock: "system-lock-screen-symbolic",
   audio: {
     mic: {
       muted: "microphone-disabled-symbolic",
@@ -58,11 +57,12 @@ export default {
     low: "󰃞",
   },
   powermenu: {
-    sleep: "weather-clear-night-symbolic",
+    suspend: "weather-clear-night-symbolic",
     // reboot: "system-reboot-symbolic",
     reboot: "emblem-synchronizing-symbolic",
     logout: "system-log-out-symbolic",
     shutdown: "system-shutdown-symbolic",
+    lock: "system-lock-screen-symbolic",
   },
   recorder: {
     recording: "media-record-symbolic",

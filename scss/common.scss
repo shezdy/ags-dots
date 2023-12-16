@@ -79,9 +79,8 @@
 }
 
 @mixin button_focus() {
-  // box-shadow: inset 0 0 0 $border_width $accent;
-  // background-color: $hover;
-  // color: $hover_fg;
+  background-color: lighten($hover, 2%);
+  color: $hover_fg;
 }
 
 @mixin button_hover() {
@@ -100,8 +99,15 @@
   color: transparentize($fg, 0.7);
 }
 
-@mixin button($flat: false, $reactive: true, $radii: $radii, $focusable: true) {
-  transition: $dur_med;
+@mixin button(
+  $flat: false,
+  $reactive: true,
+  $radii: $radii,
+  $focusable: true,
+  $hoverable: true,
+  $transition_dur: $dur_short
+) {
+  transition: $transition_dur;
   border-radius: $radii;
   color: $fg;
 
@@ -119,9 +125,10 @@
         @include button_focus;
       }
     }
-
-    &:hover {
-      @include button_hover;
+    @if $hoverable {
+      &:hover {
+        @include button_hover;
+      }
     }
 
     &:active,

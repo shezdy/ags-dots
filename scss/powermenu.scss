@@ -1,0 +1,20 @@
+window#powermenu {
+  .window-content {
+    @include floating_widget;
+
+    border-radius: 100px;
+    padding: 16px;
+
+    * {
+      font-size: 50px;
+      font-family: $mono_font;
+    }
+
+    button {
+      padding: 16px 24px;
+      &:focus {
+        color: $accent;
+      }
+    }
+  }
+}

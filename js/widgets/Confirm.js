@@ -1,5 +1,5 @@
-import { App, Utils, Variable, Widget } from "../imports.js";
-import ShadedPopupWindow from "./ShadedPopupWindow.js";
+import { App, Gdk, Widget } from "../imports.js";
+import PopupWindow from "./PopupWindow.js";
 
 let action = () => {};
 
@@ -9,9 +9,8 @@ export function ConfirmAction(fun) {
 }
 
 export default () =>
-  ShadedPopupWindow({
+  PopupWindow({
     name: "confirm",
-    expand: true,
     layer: "overlay",
     child: Widget.Box({
       vertical: true,
@@ -30,12 +29,25 @@ export default () =>
         Widget.Box({
           className: "buttons horizontal",
           vexpand: true,
-          vpack: "end",
-          homogeneous: true,
           children: [
             Widget.Button({
               child: Widget.Label("No"),
               onClicked: () => App.closeWindow("confirm"),
+              hexpand: true,
+              connections: [
+                [
+                  "enter-notify-event",
+                  (self) => {
+                    self.grab_focus();
+                  },
+                ],
+                [
+                  "map",
+                  (self) => {
+                    self.grab_focus();
+                  },
+                ],
+              ],
             }),
             Widget.Button({
               child: Widget.Label("Yes"),
@@ -43,7 +55,36 @@ export default () =>
                 action();
                 App.closeWindow("confirm");
               },
+              hexpand: true,
+              connections: [
+                [
+                  "enter-notify-event",
+                  (self) => {
+                    self.grab_focus();
+                  },
+                ],
+              ],
             }),
+          ],
+          connections: [
+            [
+              "key-press-event",
+              (self, event) => {
+                const key = event.get_keyval()[1];
+                switch (key) {
+                  case Gdk.KEY_y:
+                  case Gdk.KEY_Y:
+                    self.children[1].grab_focus();
+                    return true;
+                  case Gdk.KEY_n:
+                  case Gdk.KEY_N:
+                    self.children[0].grab_focus();
+                    return true;
+                  default:
+                    return false;
+                }
+              },
+            ],
           ],
         }),
       ],

@@ -31,7 +31,7 @@ const PowerMenu = (event) =>
           ConfirmAction(() => execSh(options.powermenu.suspend));
         },
         child: Widget.Box({
-          children: [Widget.Icon(icons.powermenu.sleep), Widget.Label("  Suspend")],
+          children: [Widget.Icon(icons.powermenu.suspend), Widget.Label("  Suspend")],
         }),
       }),
       Widget.MenuItem({
@@ -73,7 +73,7 @@ const SystemRow = () =>
       Widget.Button({
         vpack: "center",
         onClicked: () => execSh(options.powermenu.lock),
-        child: Widget.Icon(icons.lock),
+        child: Widget.Icon(icons.powermenu.lock),
       }),
       Widget.Button({
         child: Widget.Icon(icons.powermenu.shutdown),

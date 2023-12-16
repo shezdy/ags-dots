@@ -26,6 +26,7 @@ Some stuff you might want in your hyprland.conf:
 
 ```
 bind = $mainMod, Space, exec, ags -t launcher
+bind = $mainMod, P, exec, ags -t powermenu
 
 bind = $mainMod, c, exec, ags -r "minimizeFocused()"
 bind = $mainMod CONTROL, c, exec, ags -r "restoreClient()"
