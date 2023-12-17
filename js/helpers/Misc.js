@@ -54,6 +54,21 @@ export function restoreClient() {
 // global so it can be called from hyprland keybinds
 globalThis.restoreClient = restoreClient;
 
+function _focusFS(client, workspaceID) {
+  const fsClient = Hyprland.clients.find(
+    (c) => c.workspace.id === workspaceID && c.fullscreen === true,
+  );
+  if (fsClient && fsClient.address !== client.address) {
+    const mode = fsClient.fullscreenMode;
+    Hyprland.sendMessage(`dispatch focuswindow address:${fsClient.address}`);
+    Hyprland.sendMessage("dispatch fullscreen 0");
+    Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+    Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
+  } else {
+    Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+  }
+}
+
 /**
  * @param {object} client  hyprland client
  * @param {boolean} cursorWarp
@@ -62,33 +77,22 @@ export function focusClient(client, cursorWarp = false) {
   if (!cursorWarp) {
     Hyprland.sendMessage("keyword general:no_cursor_warps true");
   }
-  // TODO: add case for when the window is minimized AND the workspace is in fullscreen mode
+
   if (client.workspace.id < 1) {
-    Hyprland.sendMessage(
-      `dispatch movetoworkspace ${
-        client.workspace.name.match(/\d+$/)[0] // match a number at the end of the workspace name
-      },address:${client.address}`,
-    );
-  } else if (Hyprland.getWorkspace(client.workspace.id).hasfullscreen) {
-    // if there is a fs window on the workspace it needs to become the new fs window
-    const fsClient = Hyprland.clients.find(
-      (c) => c.workspace.id === client.workspace.id && c.fullscreen === true,
-    );
-    if (fsClient && fsClient.address !== client.address) {
-      const mode = fsClient.fullscreenMode;
-      Hyprland.sendMessage(`dispatch focuswindow address:${fsClient.address}`);
-      Hyprland.sendMessage("dispatch fullscreen 0");
-      Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
-      Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
-    } else {
-      Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+    const normalWS = parseInt(client.workspace.name.match(/\d+$/)[0]);
+    Hyprland.sendMessage(`dispatch movetoworkspace ${normalWS},address:${client.address}`);
+    if (Hyprland.getWorkspace(normalWS)?.hasfullscreen) {
+      _focusFS(client, normalWS);
     }
+  } else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
+    _focusFS(client, client.workspace.id);
   } else {
     Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
     if (client.floating === true) {
       Hyprland.sendMessage(`dispatch alterzorder top,address:${client.address}`);
     }
   }
+
   if (!cursorWarp) {
     Hyprland.sendMessage("keyword general:no_cursor_warps false");
   }
