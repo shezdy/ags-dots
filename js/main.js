@@ -58,6 +58,7 @@ export default {
   style: css,
   notificationPopupTimeout: 5000,
   cacheNotificationActions: true,
+  cacheCoverArt: true,
   windows: [
     forMonitors(Bar),
     forMonitors(Desktop),
