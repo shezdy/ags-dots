@@ -31,9 +31,8 @@ export default {
   // This will be called to set brightness if the
   // Brightness service fails to find backlights via brightnessctl
   fallbackBrightnessCmd: (b) => `
-  ddcutil -b 5 setvcp 10 ${b + 10} --sleep-multiplier .01 --noverify &
-  ddcutil -b 6 setvcp 10 ${b}  --sleep-multiplier .01 --noverify
-  ddcutil -b 6 scs --sleep-multiplier .5
+  ddcutil -b 5 setvcp 10 ${b + 10} --sleep-multiplier 0 --noverify &
+  ddcutil -b 6 setvcp 10 ${b}  --sleep-multiplier 0 --noverify
   `,
   launcher: {
     pins: [
@@ -48,7 +47,7 @@ export default {
       "joplin",
       "freetube",
       "localsend",
-      "vscodium",
+      "vscodium - wayland",
       "bitwarden",
       "tor browser",
       "system monitor",

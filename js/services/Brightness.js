@@ -100,8 +100,8 @@ class Brightness extends Service {
     super();
     try {
       this.#screens = new Map();
+      const out = Utils.exec("brightnessctl --class=backlight -l -m");
       if (out.trim() === "") {
-        console.log("Brightnessctl found no backlights, using fallback command.");
         this.#screens = undefined;
         return;
       }
@@ -110,6 +110,7 @@ class Brightness extends Service {
         this.#screens.set(info[0], new Screen(info[0], info[2] / info[4]));
       }
     } catch (error) {
+      console.error(error);
       this.#screens = undefined;
     }
   }
