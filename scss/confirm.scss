@@ -14,7 +14,7 @@ window#confirm {
     }
 
     button {
-      @include button($flat: true, $hoverable: false, $transition_dur: 0);
+      @include button($flat: true, $focusable: true, $hoverable: false, $transition_dur: 0);
       label {
         font-size: 1.3rem;
       }
