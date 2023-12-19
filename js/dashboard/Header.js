@@ -72,7 +72,10 @@ const SystemRow = () =>
       }),
       Widget.Button({
         vpack: "center",
-        onClicked: () => execSh(options.powermenu.lock),
+        onClicked: () => {
+          App.closeWindow("dashboard");
+          execSh(options.powermenu.lock);
+        },
         child: Widget.Icon(icons.powermenu.lock),
       }),
       Widget.Button({
