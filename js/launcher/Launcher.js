@@ -39,12 +39,16 @@ const Applauncher = () => {
           }
           self.add(AppItem(app));
         });
-        Applications.list.map((app) => {
-          for (const appName of options.launcher.pins) {
-            if (app.name.toLowerCase() === appName.toLowerCase()) return;
-          }
-          self.add(AppItem(app));
-        });
+        Applications.list
+          .sort((a, b) => {
+            return a.frequency < b.frequency;
+          })
+          .map((app) => {
+            for (const appName of options.launcher.pins) {
+              if (app.name.toLowerCase() === appName.toLowerCase()) return;
+            }
+            self.add(AppItem(app));
+          });
         // The child is a Gtk.FlowBoxChild, not the button, but we only want to focus the app button
         // which is the child of the child
         self.get_child_at_index(0).get_child().grab_focus();
