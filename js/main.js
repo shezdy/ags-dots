@@ -2,7 +2,7 @@ import AltTab from "./alttab/AltTab.js";
 import Bar from "./bar/Bar.js";
 import Dashboard from "./dashboard/Dashboard.js";
 import Desktop from "./desktop/Desktop.js";
-import { App, GLib, Gdk, Utils } from "./imports.js";
+import { App, GLib, Gdk, Hyprland, Utils } from "./imports.js";
 import Launcher from "./launcher/Launcher.js";
 import NotificationPopups from "./notifications/NotificationPopups.js";
 import options from "./options.js";
@@ -53,6 +53,13 @@ try {
 } catch (error) {
   console.error(error);
 }
+
+Hyprland.connect("monitor-added", () => {
+  Utils.exec("hyprctl dispatch exec 'ags -q ; ags'");
+});
+Hyprland.connect("monitor-removed", () => {
+  Utils.exec("hyprctl dispatch exec 'ags -q ; ags'");
+});
 
 export default {
   style: css,

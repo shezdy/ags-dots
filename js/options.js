@@ -13,15 +13,15 @@ export default {
     shutdown: "systemctl poweroff",
     reboot: "systemctl reboot",
     suspend: `
-    playerctl pause & 
-    pkill ags
+    playerctl -a pause & 
+    ags -q
     swaylock -f -c "#141319"
     pid=$(pgrep swaylock)
     systemctl suspend
     waitpid $pid
     hyprctl dispatch exec ags`,
     lock: `
-    playerctl pause
+    playerctl -a pause
     swaylock -f -c "#141319"`,
     logout: "hyprctl dispatch exit",
   },
