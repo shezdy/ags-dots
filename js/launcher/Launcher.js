@@ -25,30 +25,28 @@ const Applauncher = () => {
       className: "app-list",
       vpack: "start",
       hpack: "start",
-      min_children_per_line: 5,
-      max_children_per_line: 5,
-      selection_mode: Gtk.SelectionMode.NONE,
+      minChildrenPerLine: 5,
+      maxChildrenPerLine: 5,
       setup: (self) => {
-        options.launcher.pins.map((term) => {
+        for (const name of options.launcher.pins) {
           const app = Applications.list.find(
-            (app) => app.name.toLowerCase() === term.toLowerCase(),
+            (app) => app.name.toLowerCase() === name.toLowerCase(),
           );
           if (!app) {
             console.warn(`Launcher pinned app "${term}" not found`);
-            return;
+            continue;
           }
           self.add(AppItem(app));
-        });
-        Applications.list
-          .sort((a, b) => {
-            return a.frequency < b.frequency;
-          })
-          .map((app) => {
-            for (const appName of options.launcher.pins) {
-              if (app.name.toLowerCase() === appName.toLowerCase()) return;
-            }
-            self.add(AppItem(app));
-          });
+        }
+
+        for (const app of Applications.list.sort((a, b) => {
+          return a.frequency < b.frequency;
+        })) {
+          if (options.launcher.pins.find((name) => name.toLowerCase() === app.name.toLowerCase()))
+            continue;
+          self.add(AppItem(app));
+        }
+
         // The child is a Gtk.FlowBoxChild, not the button, but we only want to focus the app button
         // which is the child of the child
         self.get_child_at_index(0).get_child().grab_focus();
