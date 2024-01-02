@@ -187,7 +187,11 @@ window#dashboard .dashboard {
       .brightness-icon,
       button {
         @include button($flat: true);
-        padding: calc($padding / 2);
+        padding: calc($padding / 2) $padding;
+
+        &.arrow {
+          padding: calc($padding / 2);
+        }
       }
 
       scale {
@@ -210,6 +214,10 @@ window#dashboard .dashboard {
         image {
           font-size: 1.2em;
         }
+      }
+
+      .selected {
+        background-color: $surface2;
       }
     }
   }
