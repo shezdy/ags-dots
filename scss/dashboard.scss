@@ -64,7 +64,7 @@ window#dashboard .dashboard {
         padding: calc($spacing / 2) $spacing;
 
         label {
-          font-size: 1.2em;
+          font-size: 1.1em;
         }
       }
     }
@@ -74,11 +74,14 @@ window#dashboard .dashboard {
 
       .notification {
         @include notification;
+        @include widget;
+        margin: calc($spacing / 2) 0;
+        padding: $spacing;
 
-        > box {
-          @include widget;
-          margin: calc($spacing / 2) $spacing;
-          padding: $spacing;
+        .actions {
+          button {
+            background-color: $surface2;
+          }
         }
       }
     }

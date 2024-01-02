@@ -1,22 +1,17 @@
 import { Notifications, Widget } from "../imports.js";
-import Notification from "../notifications/Notification.js";
+import { NotificationNoReveal } from "../notifications/Notification.js";
 
 const ClearButton = () =>
   Widget.Button({
     onPrimaryClick: () => Notifications.clear(),
-    binds: [["sensitive", Notifications, "notifications", (n) => n.length > 0]],
+    sensitive: Notifications.bind("notifications").transform((n) => n.length > 0),
     child: Widget.Box({
       children: [
         Widget.Label("Clear "),
         Widget.Icon({
-          binds: [
-            [
-              "icon",
-              Notifications,
-              "notifications",
-              (n) => (n.length > 0 ? "user-trash-full-symbolic" : "user-trash-symbolic"),
-            ],
-          ],
+          icon: Notifications.bind("notifications").transform((n) =>
+            n.length > 0 ? "user-trash-full-symbolic" : "user-trash-symbolic",
+          ),
         }),
       ],
     }),
@@ -32,14 +27,9 @@ const NotificationList = () =>
   Widget.Box({
     vertical: true,
     vexpand: false,
-    connections: [
-      [
-        Notifications,
-        (self) => {
-          self.children = Notifications.notifications.reverse().map(Notification);
-        },
-      ],
-    ],
+    children: Notifications.bind("notifications").transform((n) =>
+      n.reverse().map(NotificationNoReveal),
+    ),
   });
 
 const Placeholder = () =>
@@ -53,7 +43,7 @@ const Placeholder = () =>
       // Widget.Icon("notifications-disabled-symbolic"),
       Widget.Label("No notifications"),
     ],
-    binds: [["visible", Notifications, "notifications", (n) => n.length === 0]],
+    visible: Notifications.bind("notifications").transform((n) => n.length === 0),
   });
 
 export default () =>
@@ -74,7 +64,7 @@ export default () =>
           vertical: true,
           children: [NotificationList()],
         }),
-        binds: [["visible", Notifications, "notifications", (n) => n.length > 0]],
+        visible: Notifications.bind("notifications").transform((n) => n.length > 0),
       }),
     ],
   });

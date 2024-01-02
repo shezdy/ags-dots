@@ -68,6 +68,7 @@ export default {
     recording: "media-record-symbolic",
   },
   notifications: {
+    close: "window-close-symbolic",
     noisy: "preferences-system-notifications-symbolic",
     silent: "notifications-disabled-symbolic",
   },

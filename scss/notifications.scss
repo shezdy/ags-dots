@@ -1,18 +1,18 @@
 @mixin notification() {
-  &.critical > box {
+  &.critical {
     border: $border_width solid $red;
   }
 
-  > box {
-    border-radius: calc($radii / 2);
-    padding: $spacing;
-  }
+  // > box {
+  //   border-radius: calc($radii / 2);
+  //   padding: $padding;
+  // }
 
   .content {
     .title {
       margin-right: $spacing;
       color: $fg;
-      font-size: 1.1em;
+      font-size: 1.2em;
     }
 
     .time {
@@ -20,11 +20,14 @@
     }
 
     .description {
-      font-size: 0.9em;
+      font-size: 1em;
       color: transparentize($fg, 0.2);
     }
 
     .icon {
+      font-size: 78px;
+      min-width: 78px;
+      min-height: 78px;
       border-radius: $radii * 0.8;
       margin-right: $spacing;
 
@@ -35,7 +38,9 @@
   }
 
   .actions {
-    padding-top: $spacing;
+    &.visible {
+      margin-top: $spacing;
+    }
 
     button {
       @include button;
@@ -73,12 +78,10 @@
 
 .notifications-popup-list {
   .notification {
+    @include floating_widget;
     @include notification;
-
-    > box {
-      @include floating_widget;
-      border-radius: $radii;
-    }
+    border-radius: $radii;
+    margin-bottom: 0;
 
     .description {
       min-width: 350px;

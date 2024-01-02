@@ -57,11 +57,8 @@ const Dashboard = () =>
           }),
         ],
       }),
-      Widget.Box({
-        vertical: true,
-        hpack: "end",
-        children: [Widget.Separator(), NotificationCenter()],
-      }),
+      Widget.Separator(),
+      NotificationCenter(),
       Widget.Separator(),
       Widget.Box({
         className: "calendar",
