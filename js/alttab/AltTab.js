@@ -17,8 +17,14 @@ const syncClientsAndShow = async () => {
         .sort((a, b) => {
           return a.focusHistoryID > b.focusHistoryID;
         });
+
+      if (clients.length === 0) return;
+
       altTabBox.children = [AltTabFlowbox(clients, 6)];
-      selectedIndex.value = 1;
+
+      if (clients.length === 1) selectedIndex.value = 0;
+      else selectedIndex.value = 1;
+
       altTabBox.parent.visible = true;
       submap = true;
       ignoreCycle = true;
@@ -53,7 +59,7 @@ const cycleNext = (isInitialPress = false) => {
 };
 globalThis.cycleNext = cycleNext;
 
-const TaskBox = (client, index) => {
+const ClientItem = (client, index) => {
   return Widget.Button({
     child: Widget.Box({
       vertical: true,
@@ -68,6 +74,7 @@ const TaskBox = (client, index) => {
           className: "title",
           label: client.title,
           truncate: "end",
+          wrapMode: 2, // wrap at word boundaries, but fall back to char
           lines: 2,
         }),
       ],
@@ -75,32 +82,20 @@ const TaskBox = (client, index) => {
     onClicked: () => {
       selectedIndex.value = index;
     },
-    connections: [
-      [
-        selectedIndex,
-        (self) => {
-          self.className = selectedIndex.value === index ? "selected client" : "client";
-        },
-      ],
-    ],
-    properties: [
-      ["address", client.address],
-      ["initialTitle", client.initialTitle],
-      ["workspace", client.workspace],
-    ],
+    className: selectedIndex.bind().transform((i) => (i === index ? "selected client" : "client")),
   });
 };
 
-const AltTabFlowbox = (tasks, colNum) =>
+const AltTabFlowbox = (clients, colNum) =>
   Widget.FlowBox({
     className: "app-list",
     minChildrenPerLine: colNum,
     maxChildrenPerLine: colNum,
     selectionMode: Gtk.SelectionMode.NONE,
     setup: (self) => {
-      tasks.map((task, index) => {
-        self.add(TaskBox(task, index));
-      });
+      for (let i = 0; i < clients.length; i++) {
+        self.add(ClientItem(clients[i], i));
+      }
       self.show_all();
     },
   });

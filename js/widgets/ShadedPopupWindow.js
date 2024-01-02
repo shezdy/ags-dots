@@ -7,7 +7,7 @@ const Padding = (windowName) =>
     className: "padding",
     hexpand: true,
     vexpand: true,
-    connections: [["button-press-event", () => App.toggleWindow(windowName)]],
+    setup: (self) => self.on("button-press-event", () => App.toggleWindow(windowName)),
   });
 
 /**

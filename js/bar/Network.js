@@ -5,10 +5,10 @@ const WifiIndicator = () =>
   Widget.Box({
     children: [
       Widget.Icon({
-        binds: [["icon", Network.wifi, "icon-name"]],
+        icon: Network.wifi.bind("icon-name"),
       }),
       Widget.Label({
-        binds: [["label", Network.wifi, "ssid"]],
+        label: Network.wifi.bind("ssid"),
       }),
     ],
   });
@@ -18,35 +18,19 @@ const WiredIndicator = () =>
     onClicked: () => App.toggleWindow("dashboard"),
     child: Widget.Icon({
       className: "icon",
-      connections: [
-        [
-          Network,
-          (self) => {
-            const status = Network.connectivity;
-            if (status === "full") self.icon = icons.network.wired.connected;
-            else if (status === "portal") self.icon = icons.network.wired.portal;
-            else if (status === "limited") self.icon = icons.network.wired.limited;
-            else self.icon = icons.network.wired.disconnected;
-          },
-          "notify::connectivity",
-        ],
-      ],
+      icon: Network.bind("connectivity").transform((status) => {
+        switch (status) {
+          case "full":
+            return icons.network.wired.connected;
+          case "portal":
+            return icons.network.wired.portal;
+          case "limited":
+            return icons.network.wired.limited;
+          default:
+            return icons.network.wired.disconnected;
+        }
+      }),
     }),
-    // Widget.Label({
-    //   connections: [
-    //     [
-    //       Network,
-    //       (self) => {
-    //         const status = Network.connectivity;
-    //         if (status === "full") self.label = "󰇽";
-    //         else if (status === "portal") self.label = "󱗜";
-    //         else if (status === "limited") self.label = "󰍵";
-    //         else self.label = "󰀧";
-    //       },
-    //       "notify::connectivity",
-    //     ],
-    //   ],
-    // }),
   });
 
 export default () =>
@@ -56,5 +40,5 @@ export default () =>
       ["wifi", WifiIndicator()],
       ["wired", WiredIndicator()],
     ],
-    binds: [["shown", Network, "primary", (p) => p || "wired"]],
+    shown: Network.bind("primary").transform((p) => p || "wired"),
   });

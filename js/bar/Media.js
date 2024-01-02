@@ -45,23 +45,24 @@ const MediaBox = (player) => {
               className: "hoverbox",
             }),
           ],
-          connections: [
-            [
-              player,
-              (self) => {
-                self.css = `background-image: url("${player.coverPath}")`;
-              },
-              "notify::cover-path",
-            ],
-            [
-              player,
-              (self) => {
-                if (player.trackCoverUrl === "" || !App.config.cacheCoverArt)
-                  self.css = `background-image: url("${ASSET_DIR}/media.png")`;
-              },
-              "notify::track-cover-url",
-            ],
-          ],
+          setup: (self) => {
+            self
+              .hook(
+                player,
+                (self) => {
+                  self.css = `background-image: url("${player.coverPath}")`;
+                },
+                "notify::cover-path",
+              )
+              .hook(
+                player,
+                (self) => {
+                  if (player.trackCoverUrl === "" || !App.config.cacheCoverArt)
+                    self.css = `background-image: url("${ASSET_DIR}/media.png")`;
+                },
+                "notify::track-cover-url",
+              );
+          },
         }),
       }),
       Widget.Button({
@@ -78,35 +79,21 @@ const MediaBox = (player) => {
           children: [
             Widget.Label({
               className: "artist",
-              connections: [
-                [
-                  player,
-                  (self) => {
-                    const artists = player.trackArtists.join(", ");
-                    if (!artists || artists === "Unknown artist") {
-                      self.label = `${player.name} `;
-                    } else {
-                      if (artists.length > 40) self.label = `${artists.slice(0, 37)}... `;
-                      else self.label = `${artists} `;
-                    }
-                  },
-                  "notify::track-artists",
-                ],
-              ],
+              label: player.bind("track-artists").transform((list) => {
+                const artists = list.join(", ");
+                if (!artists || artists === "Unknown artist") {
+                  return `${player.name} `;
+                }
+                if (artists.length > 40) return `${artists.slice(0, 37)}... `;
+                return `${artists} `;
+              }),
             }),
             Widget.Label({
               className: "title",
-              connections: [
-                [
-                  player,
-                  (self) => {
-                    const title = player.trackTitle;
-                    if (title.length > 40) self.label = `${title.slice(0, 37)}...`;
-                    else self.label = `${title}`;
-                  },
-                  "notify::track-title",
-                ],
-              ],
+              label: player.bind("track-title").transform((title) => {
+                if (title.length > 40) return `${title.slice(0, 37)}...`;
+                return title;
+              }),
             }),
           ],
         }),
@@ -117,8 +104,8 @@ const MediaBox = (player) => {
 
 export default () => {
   return Widget.Box({
-    connections: [
-      [
+    setup: (self) => {
+      self.hook(
         Mpris,
         (self) => {
           const player = getPlayer();
@@ -129,7 +116,7 @@ export default () => {
           self.children = [MediaBox(player)];
         },
         "notify::players",
-      ],
-    ],
+      );
+    },
   });
 };

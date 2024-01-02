@@ -1,4 +1,4 @@
-import { App, Utils, Widget } from "../imports.js";
+import { App, Widget } from "../imports.js";
 import ClockLabel from "../widgets/ClockLabel.js";
 
 export default () =>

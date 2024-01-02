@@ -18,8 +18,8 @@ export default () =>
       children: [
         Widget.Icon({
           className: "icon",
-          connections: [
-            [
+          setup: (self) => {
+            self.hook(
               Audio,
               (self) => {
                 if (!Audio.speaker) return;
@@ -31,16 +31,15 @@ export default () =>
                 else if (vol > 100) icon = "overamplified";
 
                 self.icon = `audio-volume-${icon}-symbolic`;
-                self.tooltipText = `Volume ${vol}%`;
               },
               "speaker-changed",
-            ],
-          ],
+            );
+          },
         }),
         Widget.Label({
           className: "label",
-          connections: [
-            [
+          setup: (self) => {
+            self.hook(
               Audio,
               (self) => {
                 if (!Audio.speaker) return;
@@ -55,8 +54,8 @@ export default () =>
                 else self.label = `${vol}`;
               },
               "speaker-changed",
-            ],
-          ],
+            );
+          },
         }),
       ],
     }),

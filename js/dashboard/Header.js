@@ -61,14 +61,7 @@ const SystemRow = () =>
       Widget.Label({
         className: "uptime",
         hexpand: true,
-        connections: [
-          [
-            uptime,
-            (label) => {
-              label.label = `󰅐  ${uptime.value}`;
-            },
-          ],
-        ],
+        label: uptime.bind().transform((v) => `󰅐  ${v}`),
       }),
       Widget.Button({
         vpack: "center",

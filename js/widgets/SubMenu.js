@@ -24,14 +24,7 @@ const Arrow = (revealer, direction, items) => {
     className: "submenu",
     vpack: "center",
     hpack: "center",
-    connections: [
-      [
-        items,
-        (btn) => {
-          btn.tooltipText = `${items.value} Items`;
-        },
-      ],
-    ],
+    tooltipText: items.bind().transform((v) => `${v} Items`),
     onClicked: () => {
       animate();
       revealer.revealChild = !revealer.revealChild;

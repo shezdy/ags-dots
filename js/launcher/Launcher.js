@@ -13,7 +13,7 @@ const searchBar = Widget.Entry({
   setup: (self) => {
     self.grab_focus_without_selecting();
   },
-  binds: [["text", searchTerm]],
+  text: searchTerm.bind(),
   on_change: ({ text }) => {
     searchTerm.value = text;
   },
@@ -28,6 +28,27 @@ const Applauncher = () => {
       minChildrenPerLine: 5,
       maxChildrenPerLine: 5,
       setup: (self) => {
+        self.hook(searchTerm, (self) => {
+          if (searchTerm.value.length < 1) {
+            self.get_child_at_index(0).get_child().grab_focus();
+            self.show_all();
+            return;
+          }
+          for (const item of self.get_children()) {
+            if (item.get_child().app.match(searchTerm.value)) {
+              item.visible = true;
+            } else {
+              item.visible = false;
+            }
+          }
+          for (const item of self.get_children()) {
+            if (item.visible) {
+              item.get_child().grab_focus();
+              break;
+            }
+          }
+        });
+
         for (const name of options.launcher.pins) {
           const app = Applications.list.find(
             (app) => app.name.toLowerCase() === name.toLowerCase(),
@@ -56,31 +77,6 @@ const Applauncher = () => {
         });
         self.show_all();
       },
-      connections: [
-        [
-          searchTerm,
-          (self) => {
-            if (searchTerm.value.length < 1) {
-              self.get_child_at_index(0).get_child().grab_focus();
-              self.show_all();
-              return;
-            }
-            for (const item of self.get_children()) {
-              if (item.get_child().app.match(searchTerm.value)) {
-                item.visible = true;
-              } else {
-                item.visible = false;
-              }
-            }
-            for (const item of self.get_children()) {
-              if (item.visible) {
-                item.get_child().grab_focus();
-                break;
-              }
-            }
-          },
-        ],
-      ],
     });
 
   return Widget.Box({
@@ -91,28 +87,14 @@ const Applauncher = () => {
       Widget.Scrollable({
         hscroll: "never",
         vscroll: "always",
-
-        connections: [
-          [
-            Applications,
-            (self) => {
-              self.child = flowbox();
-            },
-            "changed",
-          ],
-        ],
+        child: Applications.bind().transform(() => flowbox()),
       }),
     ],
-    connections: [
-      [
-        App,
-        (_, name, visible) => {
-          if (name !== WINDOW_NAME || visible === false) return;
-          searchTerm.value = "";
-        },
-        "window-toggled",
-      ],
-    ],
+    setup: (self) => {
+      self.on("map", () => {
+        searchTerm.value = "";
+      });
+    },
   });
 };
 
@@ -122,31 +104,28 @@ export default () =>
     transition: "none",
     layer: "overlay",
     child: Applauncher(),
-    connections: [
-      [
-        "key-press-event",
-        (_, event) => {
-          const key = event.get_keyval()[1];
-          switch (key) {
-            case Gdk.KEY_downarrow:
-            case Gdk.KEY_Up:
-            case Gdk.KEY_Down:
-            case Gdk.KEY_Left:
-            case Gdk.KEY_Right:
-            case Gdk.KEY_Tab:
-            case Gdk.KEY_Return:
-            case Gdk.KEY_Page_Up:
-            case Gdk.KEY_Page_Down:
-            case Gdk.KEY_Home:
-            case Gdk.KEY_End:
-              return false;
-            default:
-              if (!searchBar.is_focus) {
-                searchBar.grab_focus_without_selecting();
-              }
-              return false;
-          }
-        },
-      ],
-    ],
+    setup: (self) => {
+      self.on("key-press-event", (_, event) => {
+        const key = event.get_keyval()[1];
+        switch (key) {
+          case Gdk.KEY_downarrow:
+          case Gdk.KEY_Up:
+          case Gdk.KEY_Down:
+          case Gdk.KEY_Left:
+          case Gdk.KEY_Right:
+          case Gdk.KEY_Tab:
+          case Gdk.KEY_Return:
+          case Gdk.KEY_Page_Up:
+          case Gdk.KEY_Page_Down:
+          case Gdk.KEY_Home:
+          case Gdk.KEY_End:
+            return false;
+          default:
+            if (!searchBar.is_focus) {
+              searchBar.grab_focus_without_selecting();
+            }
+            return false;
+        }
+      });
+    },
   });

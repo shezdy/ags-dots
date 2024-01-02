@@ -29,14 +29,15 @@ class PopupWindow extends AgsWindow {
       child,
       transitionDuration: options.transition.duration,
       className: "revealer",
-      connections: [
-        [
+      setup: (self) => {
+        self.hook(
           App,
           (_, wname, visible) => {
             if (wname === name) this.revealer.revealChild = visible;
           },
-        ],
-      ],
+          "window-toggled",
+        );
+      },
     });
 
     this.child = Widget.Box({

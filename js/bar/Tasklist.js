@@ -42,11 +42,6 @@ const TaskButton = (client) => {
         : Hyprland.active.client.address === client.address
           ? "active"
           : "",
-    properties: [
-      ["address", client.address],
-      ["initialTitle", client.initialTitle],
-      ["workspace", client.workspace],
-    ],
   });
 };
 
@@ -75,10 +70,11 @@ export default (monitor) => {
     className: "tasklist",
     hexpand: true,
     homogeneous: true,
-    connections: [
-      [Hyprland.active.workspace, tasklistActive],
-      [Hyprland.active.client, tasklistActive, "notify::address"],
-      [clientMap, tasklist, "changed"],
-    ],
+    setup: (self) => {
+      self
+        .hook(Hyprland.active.workspace, tasklistActive)
+        .hook(Hyprland.active.client, tasklistActive, "notify::address")
+        .hook(clientMap, tasklist, "changed");
+    },
   });
 };

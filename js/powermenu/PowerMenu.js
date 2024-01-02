@@ -16,14 +16,11 @@ const PowerMenuButton = (action, confirm = true) =>
       vertical: true,
       children: [Widget.Icon(icons.powermenu[action])],
     }),
-    connections: [
-      [
-        "enter-notify-event",
-        (self) => {
-          self.grab_focus();
-        },
-      ],
-    ],
+    setup: (self) => {
+      self.on("enter-notify-event", (self) => {
+        self.grab_focus();
+      });
+    },
   });
 
 export default () =>
@@ -38,13 +35,10 @@ export default () =>
         PowerMenuButton("suspend", false),
         PowerMenuButton("logout"),
       ],
-      connections: [
-        [
-          "map",
-          (self) => {
-            self.children[2].grab_focus();
-          },
-        ],
-      ],
+      setup: (self) => {
+        self.on("map", (self) => {
+          self.children[2].grab_focus();
+        });
+      },
     }),
   });

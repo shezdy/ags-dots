@@ -33,18 +33,11 @@ const BrightnessScreen = (screen) =>
                 xalign: 0,
                 maxWidthChars: 10,
                 truncate: "end",
-                binds: [["label", screen, "name"]],
+                label: screen.bind("name"),
               }),
               Widget.Label({
                 xalign: 1,
-                connections: [
-                  [
-                    screen,
-                    (l) => {
-                      l.label = `${Math.floor(screen.brightness * 100)}%`;
-                    },
-                  ],
-                ],
+                label: screen.bind("brightness").transform((b) => `${Math.floor(b * 100)}%`),
               }),
             ],
           }),
@@ -53,7 +46,7 @@ const BrightnessScreen = (screen) =>
             drawValue: false,
             roundDigits: true,
             step: 0.1,
-            binds: [["value", screen, "brightness"]],
+            value: screen.bind("brightness"),
             onChange: ({ value }) => {
               screen.brightness = value;
             },
@@ -63,7 +56,7 @@ const BrightnessScreen = (screen) =>
     ],
   });
 
-export const BrightnessMixer = (screen) =>
+export const BrightnessMixer = () =>
   Menu({
     name: "brightness-mixer",
     icon: Widget.Icon(icons.brightness.indicator),
@@ -72,7 +65,7 @@ export const BrightnessMixer = (screen) =>
       Widget.Box({
         vertical: true,
         className: "mixer",
-        binds: [["children", Brightness, "screens", (s) => s.map(BrightnessScreen)]],
+        children: Brightness.bind("screens").transform((s) => s.map(BrightnessScreen)),
       }),
     ],
   });
@@ -89,10 +82,10 @@ const BrightnessSlider = () =>
     drawValue: false,
     roundDigits: true,
     step: 0.1,
+    value: Brightness.screens[0].bind("brightness"),
     onChange: ({ value }) => {
       Brightness.screens = value;
     },
-    binds: [["value", Brightness.screens[0], "brightness"]],
   });
 
 export default () =>
@@ -104,14 +97,7 @@ export default () =>
       Widget.Box({
         vpack: "center",
         child: Arrow("brightness-mixer"),
-        connections: [
-          [
-            Brightness,
-            (box) => {
-              box.visible = Brightness.screens.length > 1;
-            },
-          ],
-        ],
+        visible: Brightness.bind("screens").transform((s) => s.length > 1),
       }),
     ],
   });

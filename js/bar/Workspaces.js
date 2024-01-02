@@ -11,7 +11,6 @@ export default (monitor) => {
           className: "ws-box",
           children: Array.from({ length: 6 }, (_, i) => i + 1 + monitor * 6).map((i) =>
             Widget.Button({
-              properties: [["i", i]],
               onClicked: () => Hyprland.sendMessage(`dispatch workspace ${i}`),
               onSecondaryClick: () => Hyprland.sendMessage(`dispatch movetoworkspacesilent ${i}`),
               child: Widget.Box({
@@ -20,8 +19,8 @@ export default (monitor) => {
               }),
             }),
           ),
-          connections: [
-            [
+          setup: (self) => {
+            self.hook(
               Hyprland,
               (box) => {
                 for (const [i, btn] of box.children.entries()) {
@@ -44,8 +43,9 @@ export default (monitor) => {
                   btn.toggleClassName("occupied", occupied);
                 }
               },
-            ],
-          ],
+              "notify::monitors",
+            );
+          },
         }),
       }),
     ],

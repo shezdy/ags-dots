@@ -34,20 +34,15 @@ export default () =>
               child: Widget.Label("No"),
               onClicked: () => App.closeWindow("confirm"),
               hexpand: true,
-              connections: [
-                [
-                  "enter-notify-event",
-                  (self) => {
+              setup: (self) => {
+                self
+                  .on("enter-notify-event", (self) => {
                     self.grab_focus();
-                  },
-                ],
-                [
-                  "map",
-                  (self) => {
+                  })
+                  .on("map", (self) => {
                     self.grab_focus();
-                  },
-                ],
-              ],
+                  });
+              },
             }),
             Widget.Button({
               child: Widget.Label("Yes"),
@@ -56,36 +51,30 @@ export default () =>
                 App.closeWindow("confirm");
               },
               hexpand: true,
-              connections: [
-                [
-                  "enter-notify-event",
-                  (self) => {
-                    self.grab_focus();
-                  },
-                ],
-              ],
+              setup: (self) => {
+                self.on("enter-notify-event", (self) => {
+                  self.grab_focus();
+                });
+              },
             }),
           ],
-          connections: [
-            [
-              "key-press-event",
-              (self, event) => {
-                const key = event.get_keyval()[1];
-                switch (key) {
-                  case Gdk.KEY_y:
-                  case Gdk.KEY_Y:
-                    self.children[1].grab_focus();
-                    return true;
-                  case Gdk.KEY_n:
-                  case Gdk.KEY_N:
-                    self.children[0].grab_focus();
-                    return true;
-                  default:
-                    return false;
-                }
-              },
-            ],
-          ],
+          setup: (self) => {
+            self.on("key-press-event", (self, event) => {
+              const key = event.get_keyval()[1];
+              switch (key) {
+                case Gdk.KEY_y:
+                case Gdk.KEY_Y:
+                  self.children[1].grab_focus();
+                  return true;
+                case Gdk.KEY_n:
+                case Gdk.KEY_N:
+                  self.children[0].grab_focus();
+                  return true;
+                default:
+                  return false;
+              }
+            });
+          },
         }),
       ],
     }),

@@ -1,4 +1,4 @@
-import { Widget, App, Audio } from "../imports.js";
+import { App, Widget } from "../imports.js";
 import Clock from "./Clock.js";
 import Media from "./Media.js";
 import Network from "./Network.js";
@@ -16,14 +16,11 @@ const SysIndicators = () => {
         child: Widget.Box({
           children: [Volume(), Network(), Clock()],
         }),
-        connections: [
-          [
-            App,
-            (self, win, visible) => {
-              self.toggleClassName("active", win === "dashboard" && visible);
-            },
-          ],
-        ],
+        setup: (self) => {
+          self.hook(App, (self, win, visible) => {
+            self.toggleClassName("active", win === "dashboard" && visible);
+          });
+        },
       }),
     ],
   });
