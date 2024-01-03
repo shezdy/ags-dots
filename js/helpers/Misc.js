@@ -1,7 +1,8 @@
 import icons from "../icons.js";
-import { App, Applications, Hyprland, Utils } from "../imports.js";
+import { App, Applications, Gtk, Hyprland, Utils } from "../imports.js";
 
 export const ASSET_DIR = `${App.configDir}/assets`;
+Gtk.IconTheme.get_default().append_search_path(ASSET_DIR);
 
 export function execSh(cmd) {
   Utils.execAsync(["sh", "-c", `${cmd}`]).catch((error) => console.error(`execSh error: ${error}`));

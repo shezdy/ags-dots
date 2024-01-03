@@ -1,5 +1,6 @@
 export default {
   settings: "emblem-system-symbolic",
+  sparkle: "sparkle-symbolic",
   tick: "object-select-symbolic",
   audio: {
     mic: {

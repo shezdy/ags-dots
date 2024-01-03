@@ -41,8 +41,8 @@ const MediaBox = (player) => {
         child: Widget.Box({
           className: "image",
           children: [
-            Widget.Box({
-              className: "hoverbox",
+            Widget.Icon({
+              icon: "sparkle-symbolic",
             }),
           ],
           setup: (self) => {
@@ -50,6 +50,7 @@ const MediaBox = (player) => {
               .hook(
                 player,
                 (self) => {
+                  self.children[0].visible = false;
                   self.css = `background-image: url("${player.coverPath}")`;
                 },
                 "notify::cover-path",
@@ -57,8 +58,10 @@ const MediaBox = (player) => {
               .hook(
                 player,
                 (self) => {
-                  if (player.trackCoverUrl === "" || !App.config.cacheCoverArt)
-                    self.css = `background-image: url("${ASSET_DIR}/media.png")`;
+                  if (player.trackCoverUrl === "" || !App.config.cacheCoverArt) {
+                    self.children[0].visible = true;
+                    self.css = "background-image: none";
+                  }
                 },
                 "notify::track-cover-url",
               );
