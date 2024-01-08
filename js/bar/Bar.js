@@ -7,6 +7,13 @@ import Tasklist from "./Tasklist.js";
 import Volume from "./Volume.js";
 import Workspaces from "./Workspaces.js";
 
+const LauncherButton = () => {
+  return Widget.Button({
+    onClicked: () => App.openWindow("launcher"),
+    className: "launcher-button",
+  });
+};
+
 const SysIndicators = () => {
   return Widget.Box({
     className: "system-indicators",
@@ -31,7 +38,7 @@ const SysIndicators = () => {
 const Left = (monitor) =>
   Widget.Box({
     className: "left",
-    children: [Workspaces(monitor)],
+    children: [LauncherButton(), Workspaces(monitor)],
   });
 
 const Center = (monitor) =>

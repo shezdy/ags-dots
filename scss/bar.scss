@@ -21,12 +21,16 @@ $bar_button_background_hover: false;
   min-height: $bar_height;
   background-color: $bg;
   color: $fg;
-  padding: 0 $bar_margin_h;
+  padding: 0 $bar_margin_h 0 0;
 
   label {
     font-family: $bar_font;
     font-size: $font_size;
     font-weight: 700;
+  }
+
+  .launcher-button {
+    min-width: $bar_margin_h;
   }
 
   $ws_active_width: 26px;
