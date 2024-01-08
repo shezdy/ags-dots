@@ -26,6 +26,7 @@ $md3_emph_accel: cubic-bezier(0.3, 0, 0.8, 0.15);
   border: 0;
   font-family: $sans_font;
   font-size: $font_size;
+  -gtk-icon-theme: "Adwaita";
 }
 
 window {
