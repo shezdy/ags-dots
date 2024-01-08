@@ -18,7 +18,9 @@ const SysIndicators = () => {
         }),
         setup: (self) => {
           self.hook(App, (self, win, visible) => {
-            self.toggleClassName("active", win === "dashboard" && visible);
+            if (win === "dashboard") {
+              self.toggleClassName("active", visible);
+            }
           });
         },
       }),
