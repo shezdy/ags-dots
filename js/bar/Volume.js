@@ -14,7 +14,7 @@ export default () =>
       Audio.speaker.volume -= 0.05;
     },
     child: Widget.Box({
-      vpack: "center",
+      vpack: "fill",
       children: [
         Widget.Icon({
           className: "icon",
