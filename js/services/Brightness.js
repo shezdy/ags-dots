@@ -1,7 +1,6 @@
 import { execSh } from "../helpers/Misc.js";
+import { Service, Utils } from "../imports.js";
 import options from "../options.js";
-import Service from "resource:///com/github/Aylur/ags/service.js";
-import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 
 class Screen extends Service {
   static {
