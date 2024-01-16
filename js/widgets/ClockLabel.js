@@ -1,13 +1,12 @@
-import { GLib, Widget } from "../imports.js";
+import { GLib, Variable, Widget } from "../imports.js";
 
-export default ({ format = "%a %d %b %H:%M", interval = 5000, ...props } = {}) =>
+const time = Variable(GLib.DateTime.new_now_local(), {
+  poll: [5000, () => GLib.DateTime.new_now_local()],
+});
+
+export default ({ format = "%a %d %b %H:%M", ...props } = {}) =>
   Widget.Label({
     className: "clock",
-    label: GLib.DateTime.new_now_local().format(format) || "wrong format",
-    setup: (self) => {
-      self.poll(interval, (self) => {
-        self.label = GLib.DateTime.new_now_local().format(format) || "wrong format";
-      });
-    },
+    label: time.bind().transform((t) => t.format(format) || "wrong format"),
     ...props,
   });
