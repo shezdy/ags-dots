@@ -1,6 +1,9 @@
 import { Notifications, Widget } from "../imports.js";
 import Notification from "./Notification.js";
 
+Notifications.notificationPopupTimeout = 5000;
+Notifications.cacheNotificationActions = true;
+
 const Popups = () =>
   Widget.Box({
     vertical: true,

@@ -1,6 +1,7 @@
-import { ASSET_DIR } from "../helpers/Misc.js";
 import { App, Hyprland, Mpris, Widget } from "../imports.js";
 import options from "../options.js";
+
+Mpris.cacheCoverArt = true;
 
 const getPlayer = () => {
   const playerList = Mpris.players;
@@ -58,7 +59,7 @@ const MediaBox = (player) => {
               .hook(
                 player,
                 (self) => {
-                  if (player.trackCoverUrl === "" || !App.config.cacheCoverArt) {
+                  if (player.trackCoverUrl === "" || !Mpris.cacheCoverArt) {
                     self.children[0].visible = true;
                     self.css = "background-image: none";
                   }

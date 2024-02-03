@@ -20,7 +20,7 @@ const syncClientsAndShow = async () => {
 
       if (clients.length === 0) return;
 
-      altTabBox.children = [AltTabFlowbox(clients, 6)];
+      altTabBox.children = [AltTabFlowbox(clients, 10)];
 
       if (clients.length === 1) selectedIndex.value = 0;
       else selectedIndex.value = 1;
@@ -112,7 +112,7 @@ export default () =>
     className: "alt-tab-window",
     layer: "overlay",
     popup: false,
-    focusable: true,
+    keymode: "exclusive",
     visible: false,
     child: altTabBox,
   });

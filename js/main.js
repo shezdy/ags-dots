@@ -63,9 +63,7 @@ Hyprland.connect("monitor-removed", () => {
 
 export default {
   style: css,
-  notificationPopupTimeout: 5000,
-  cacheNotificationActions: true,
-  cacheCoverArt: true,
+  icons: `${App.configDir}/assets`,
   windows: [
     forMonitors(Bar),
     forMonitors(Desktop),

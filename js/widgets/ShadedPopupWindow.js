@@ -23,7 +23,7 @@ export default ({ name, child, ...rest }) =>
     name,
     visible: false,
     popup: true,
-    focusable: true,
+    keymode: "exclusive",
     anchor: ["top", "bottom", "left", "right"],
     exclusivity: "ignore",
     setup() {
