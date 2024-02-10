@@ -19,7 +19,7 @@ class PopupWindow extends AgsWindow {
       ...rest,
       name,
       popup: true,
-      keymode: "exclusive",
+      keymode: "on-demand",
       classNames: ["popup-window", name],
     });
 

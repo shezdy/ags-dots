@@ -23,7 +23,7 @@ export default ({ name, child, ...rest }) =>
     name,
     visible: false,
     popup: true,
-    keymode: "exclusive",
+    keymode: "on-demand",
     anchor: ["top", "bottom", "left", "right"],
     exclusivity: "ignore",
     setup() {
