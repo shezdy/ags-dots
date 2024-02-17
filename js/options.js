@@ -1,5 +1,7 @@
+import { Utils } from "./imports.js";
+
 export default {
-  avatar: "/home/d/Pictures/art/b.png",
+  avatar: `/var/lib/AccountsService/icons/${Utils.USER}`,
   mpris: {
     // the special name "%any" can be used to match any player not on the list
     // players listed earlier will have more priority, so for example:
