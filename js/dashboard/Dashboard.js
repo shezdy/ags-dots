@@ -78,7 +78,7 @@ export default () =>
   PopupWindow({
     name: WINDOW_NAME,
     transition: "slide_left",
-    anchor: ["top", "right", "bottom"],
+    location: "right",
     child: Dashboard(),
     setup: (self) => {
       self.keybind("Escape", () => App.closeWindow(WINDOW_NAME));
