@@ -83,7 +83,7 @@ $bar_button_background_hover: false;
       margin: 0 $bar_spacing;
     }
 
-    button {
+    .ws-button {
       padding: $ws_padding;
 
       @include hover_lighten($amount: 0.15);
@@ -114,6 +114,16 @@ $bar_button_background_hover: false;
           animation: activate_width $dur_short ease;
           min-width: $ws_active_width;
           background-color: $purple;
+        }
+      }
+    }
+
+    .extra-button {
+      padding: 0 $bar_spacing;
+
+      &.active {
+        label {
+          color: $accent;
         }
       }
     }
