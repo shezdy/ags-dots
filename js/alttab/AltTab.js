@@ -111,7 +111,6 @@ export default () =>
     name: "alttab",
     className: "alt-tab-window",
     layer: "overlay",
-    popup: false,
     keymode: "on-demand",
     visible: false,
     child: altTabBox,

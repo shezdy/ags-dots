@@ -127,5 +127,6 @@ export default () =>
             return false;
         }
       });
+      self.keybind("Escape", () => App.closeWindow(WINDOW_NAME));
     },
   });

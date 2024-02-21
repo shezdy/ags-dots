@@ -1,4 +1,4 @@
-import { Widget } from "../imports.js";
+import { App, Widget } from "../imports.js";
 import Brightness from "../services/Brightness.js";
 import PopupWindow from "../widgets/PopupWindow.js";
 import BrightnessSliderRow, { BrightnessMixer } from "./BrightnessSettings.js";
@@ -13,7 +13,9 @@ import {
   VolumeSliderRow,
 } from "./VolumeSettings.js";
 
-export const Row = (children = [], menus = [], ...props) =>
+const WINDOW_NAME = "dashboard";
+
+const Row = (children = [], menus = [], ...props) =>
   Widget.Box({
     vertical: true,
     children: [
@@ -74,8 +76,11 @@ const Dashboard = () =>
 
 export default () =>
   PopupWindow({
-    name: "dashboard",
+    name: WINDOW_NAME,
     transition: "slide_left",
     anchor: ["top", "right", "bottom"],
     child: Dashboard(),
+    setup: (self) => {
+      self.keybind("Escape", () => App.closeWindow(WINDOW_NAME));
+    },
   });

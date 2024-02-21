@@ -5,6 +5,8 @@ import options from "../options.js";
 import { ConfirmAction } from "../widgets/Confirm.js";
 import PopupWindow from "../widgets/PopupWindow.js";
 
+const WINDOW_NAME = "powermenu";
+
 const PowerMenuButton = (action, confirm = true) =>
   Widget.Button({
     onClicked: () => {
@@ -25,7 +27,7 @@ const PowerMenuButton = (action, confirm = true) =>
 
 export default () =>
   PopupWindow({
-    name: "powermenu",
+    name: WINDOW_NAME,
     layer: "overlay",
     child: Widget.Box({
       children: [
@@ -39,6 +41,7 @@ export default () =>
         self.on("map", (self) => {
           self.children[2].grab_focus();
         });
+        self.keybind("Escape", () => App.closeWindow(WINDOW_NAME));
       },
     }),
   });

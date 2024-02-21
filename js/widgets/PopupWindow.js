@@ -18,7 +18,6 @@ class PopupWindow extends AgsWindow {
     super({
       ...rest,
       name,
-      popup: true,
       keymode: "on-demand",
       classNames: ["popup-window", name],
     });

@@ -1,6 +1,8 @@
 import { App, Gdk, Widget } from "../imports.js";
 import PopupWindow from "./PopupWindow.js";
 
+const WINDOW_NAME = "confirm";
+
 let action = () => {};
 
 export function ConfirmAction(fun) {
@@ -10,7 +12,7 @@ export function ConfirmAction(fun) {
 
 export default () =>
   PopupWindow({
-    name: "confirm",
+    name: WINDOW_NAME,
     layer: "overlay",
     child: Widget.Box({
       vertical: true,
@@ -74,6 +76,7 @@ export default () =>
                   return false;
               }
             });
+            self.keybind("Escape", () => App.closeWindow(WINDOW_NAME));
           },
         }),
       ],
