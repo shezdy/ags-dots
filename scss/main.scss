@@ -26,7 +26,6 @@ $md3_emph_accel: cubic-bezier(0.3, 0, 0.8, 0.15);
   border: 0;
   font-family: $sans_font;
   font-size: $font_size;
-  -gtk-icon-theme: "Adwaita";
 }
 
 window {
@@ -43,21 +42,19 @@ window {
   @include floating_widget;
   padding: calc($spacing / 2);
 
-  flowboxchild {
-    .client {
-      min-width: $client_size - 2 * $padding;
-      min-height: $client_size - 2 * $padding;
-      padding: $padding;
-      margin: calc($spacing / 2);
-      border-radius: $radii;
-      label {
-        font-family: $sans_font;
-        font-size: 12px;
-      }
+  .client {
+    min-width: $client_size - 2 * $padding;
+    min-height: $client_size - 2 * $padding;
+    padding: $padding;
+    margin: calc($spacing / 2);
+    border-radius: $radii;
+    label {
+      font-family: $sans_font;
+      font-size: 12px;
     }
-    .selected {
-      background-color: $surface2;
-    }
+  }
+  .selected {
+    background-color: $surface2;
   }
 }
 
