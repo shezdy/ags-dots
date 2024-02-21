@@ -3,6 +3,10 @@ import { Hyprland, Variable, Widget } from "../imports.js";
 
 const clientMap = Variable(new Map()); // maintain consistent order
 
+for (const client of Hyprland.clients) {
+  clientMap.value.set(client.address, client);
+}
+
 Hyprland.connect("notify::clients", (self) => {
   for (const client of self.clients) {
     clientMap.value.set(client.address, client);
