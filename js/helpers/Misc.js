@@ -109,17 +109,8 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
       Hyprland.sendMessage(
         `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`,
       );
-    else if (Hyprland.getWorkspace(client.workspace.id).hasfullscreen) {
-      const fsClient = Hyprland.clients.find(
-        (c) => c.workspace.id === client.workspace.id && c.fullscreen === true,
-      );
-      if (fsClient) {
-        const mode = fsClient.fullscreenMode;
-        Hyprland.sendMessage(`dispatch focuswindow address:${fsClient.address}`);
-        Hyprland.sendMessage("dispatch fullscreen");
-        Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
-        Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
-      }
+    else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
+      _focusFS(client, client.workspace.id);
     } else {
       Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
       if (client.floating === true) {
