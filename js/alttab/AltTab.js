@@ -8,28 +8,30 @@ let clients = [];
 let submap = false;
 let ignoreCycle = true;
 
-const syncClientsAndShow = async () => {
+const syncClientsAndShow = () => {
   // Not using Hyprland.clients because focusHistoryID will be out of date
-  Hyprland.sendMessage("j/clients")
-    .then((out) => {
-      clients = JSON.parse(out)
-        .filter((client) => client.title !== "")
-        .sort((a, b) => {
-          return a.focusHistoryID > b.focusHistoryID;
-        });
 
-      if (clients.length === 0) return;
+  try {
+    const out = Hyprland.message("j/clients");
+    clients = JSON.parse(out)
+      .filter((client) => client.title !== "")
+      .sort((a, b) => {
+        return a.focusHistoryID > b.focusHistoryID;
+      });
 
-      altTabBox.children = [AltTabFlowbox(clients, 10)];
+    if (clients.length === 0) return;
 
-      if (clients.length === 1) selectedIndex.value = 0;
-      else selectedIndex.value = 1;
+    altTabBox.children = [AltTabFlowbox(clients, 10)];
 
-      altTabBox.parent.visible = true;
-      submap = true;
-      ignoreCycle = true;
-    })
-    .catch(console.error);
+    if (clients.length === 1) selectedIndex.value = 0;
+    else selectedIndex.value = 1;
+
+    altTabBox.parent.visible = true;
+    submap = true;
+    ignoreCycle = true;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const focusClientAndHide = async (submapName) => {

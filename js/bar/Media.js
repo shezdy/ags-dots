@@ -36,7 +36,7 @@ const MediaBox = (player) => {
           const name = player.name;
           if (!name || name.length === 0) return;
           const regex = `[${name[0].toUpperCase()}${name[0].toLowerCase()}]${name.slice(1)}`;
-          Hyprland.sendMessage(`dispatch focuswindow ${regex}`);
+          Hyprland.messageAsync(`dispatch focuswindow ${regex}`);
         },
         className: "cover",
         child: Widget.Box({

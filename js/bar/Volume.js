@@ -6,7 +6,7 @@ export default () =>
     onPrimaryClick: () => {
       Audio.speaker.isMuted = !Audio.speaker.isMuted;
     },
-    onSecondaryClick: () => Hyprland.sendMessage("dispatch exec pavucontrol"),
+    onSecondaryClick: () => Hyprland.messageAsync("dispatch exec pavucontrol"),
     onScrollUp: () => {
       Audio.speaker.volume += 0.05;
     },
@@ -48,7 +48,7 @@ export default () =>
                 // else if (vol < 10) self.label = `󰕾 0${vol}%`;
                 // else if (vol < 100) self.label = `󰕾 ${vol}%`;
                 // else self.label = `󰕾 ${vol}`;
-                if (vol <= 0 || Audio.speaker.isMuted) self.label = "---";
+                if (vol <= 0 || Audio.speaker.isMuted) self.label = "00%";
                 else if (vol < 10) self.label = `0${vol}%`;
                 else if (vol < 100) self.label = `${vol}%`;
                 else self.label = `${vol}`;

@@ -12,7 +12,7 @@ export function execBash(cmd) {
 }
 
 export function launchApp(app) {
-  Hyprland.sendMessage(`dispatch exec gtk-launch ${app.desktop}`);
+  Hyprland.messageAsync(`dispatch exec gtk-launch ${app.desktop}`);
   app.frequency++;
 }
 
@@ -29,25 +29,28 @@ export function getHyprlandClientIcon(client) {
 }
 
 export function minimizeFocused() {
-  Hyprland.sendMessage("j/activewindow").then((out) => {
+  try {
+    const out = Hyprland.message("j/activewindow");
     const client = JSON.parse(out);
     if (client.workspace.id > 0)
-      Hyprland.sendMessage(`dispatch movetoworkspacesilent special:m${client.workspace.id}`);
-  });
+      Hyprland.messageAsync(`dispatch movetoworkspacesilent special:m${client.workspace.id}`);
+  } catch (e) {
+    console.error(e);
+  }
 }
 // global so it can be called from hyprland keybinds
 globalThis.minimizeFocused = minimizeFocused;
 
 export function restoreClient() {
-  Hyprland.sendMessage("j/activeworkspace")
-    .then((out) => {
-      const id = JSON.parse(out).id;
-      const client = Hyprland.clients.find((c) => c.workspace.name === `special:m${id}`);
-      if (client) {
-        Hyprland.sendMessage(`dispatch movetoworkspacesilent ${id},address:${client.address}`);
-      }
-    })
-    .catch(console.error);
+  try {
+    const out = Hyprland.message("j/activeworkspace");
+    const id = JSON.parse(out).id;
+    const client = Hyprland.clients.find((c) => c.workspace.name === `special:m${id}`);
+    if (client)
+      Hyprland.messageAsync(`dispatch movetoworkspacesilent ${id},address:${client.address}`);
+  } catch (e) {
+    console.error(e);
+  }
 }
 // global so it can be called from hyprland keybinds
 globalThis.restoreClient = restoreClient;
@@ -58,12 +61,12 @@ function _focusFS(client, workspaceID) {
   );
   if (fsClient && fsClient.address !== client.address) {
     const mode = fsClient.fullscreenMode;
-    Hyprland.sendMessage(`dispatch focuswindow address:${fsClient.address}`);
-    Hyprland.sendMessage("dispatch fullscreen 0");
-    Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
-    Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
+    Hyprland.messageAsync(`dispatch focuswindow address:${fsClient.address}`);
+    Hyprland.messageAsync("dispatch fullscreen 0");
+    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
+    Hyprland.messageAsync(`dispatch fullscreen ${mode}`);
   } else {
-    Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
   }
 }
 
@@ -73,26 +76,26 @@ function _focusFS(client, workspaceID) {
  */
 export function focusClient(client, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword general:no_cursor_warps true");
   }
 
   if (client.workspace.id < 1) {
     const normalWS = parseInt(client.workspace.name.match(/\d+$/)[0]);
-    Hyprland.sendMessage(`dispatch movetoworkspace ${normalWS},address:${client.address}`);
+    Hyprland.messageAsync(`dispatch movetoworkspace ${normalWS},address:${client.address}`);
     if (Hyprland.getWorkspace(normalWS)?.hasfullscreen) {
       _focusFS(client, normalWS);
     }
   } else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
     _focusFS(client, client.workspace.id);
   } else {
-    Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
     if (client.floating === true) {
-      Hyprland.sendMessage(`dispatch alterzorder top,address:${client.address}`);
+      Hyprland.messageAsync(`dispatch alterzorder top,address:${client.address}`);
     }
   }
 
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword general:no_cursor_warps false");
   }
 }
 
@@ -102,30 +105,30 @@ export function focusClient(client, cursorWarp = false) {
  */
 export function focusClientOrMinimize(client, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword general:no_cursor_warps true");
   }
   if (client.workspace.id > 0) {
     if (client.address === Hyprland.active.client.address)
-      Hyprland.sendMessage(
+      Hyprland.messageAsync(
         `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`,
       );
     else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
       _focusFS(client, client.workspace.id);
     } else {
-      Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
+      Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
       if (client.floating === true) {
-        Hyprland.sendMessage(`dispatch alterzorder top,address:${client.address}`);
+        Hyprland.messageAsync(`dispatch alterzorder top,address:${client.address}`);
       }
     }
   } else {
-    Hyprland.sendMessage(
+    Hyprland.messageAsync(
       `dispatch movetoworkspacesilent ${
         client.workspace.name.match(/\d+$/)[0] // get workspace number at the end of the special workspace name
       },address:${client.address}`,
     );
   }
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword general:no_cursor_warps false");
   }
 }
 
@@ -136,11 +139,11 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
  */
 export function fullscreenToggle(client, mode, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword general:no_cursor_warps true");
   }
-  Hyprland.sendMessage(`dispatch focuswindow address:${client.address}`);
-  Hyprland.sendMessage(`dispatch fullscreen ${mode}`);
+  Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
+  Hyprland.messageAsync(`dispatch fullscreen ${mode}`);
   if (!cursorWarp) {
-    Hyprland.sendMessage("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword general:no_cursor_warps false");
   }
 }

@@ -19,7 +19,7 @@ const TaskButton = (client) => {
     onClicked: () => {
       focusClientOrMinimize(client);
     },
-    onMiddleClick: () => Hyprland.sendMessage(`dispatch closewindow address:${client.address}`),
+    onMiddleClick: () => Hyprland.messageAsync(`dispatch closewindow address:${client.address}`),
     onSecondaryClick: () => fullscreenToggle(client, 1, false),
     hexpand: true,
     child: Widget.Box({

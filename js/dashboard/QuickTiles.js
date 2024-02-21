@@ -18,7 +18,7 @@ const ExecQuickTile = ({ exec, icon, labelText }) => {
     hexpand: true,
     onClicked: () => {
       App.closeWindow("dashboard");
-      Hyprland.sendMessage(`dispatch exec ${exec}`);
+      Hyprland.messageAsync(`dispatch exec ${exec}`);
     },
     child: Widget.CenterBox({
       vpack: "center",

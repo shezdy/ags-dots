@@ -171,7 +171,7 @@ const SettingsButton = () =>
   Widget.Button({
     onClicked: () => {
       App.closeWindow("dashboard");
-      Hyprland.sendMessage("dispatch exec pavucontrol");
+      Hyprland.messageAsync("dispatch exec pavucontrol");
     },
     hexpand: true,
     child: Widget.Box({
@@ -224,7 +224,7 @@ export const SourceSelector = () =>
       Widget.Button({
         onClicked: () => {
           App.closeWindow("dashboard");
-          Hyprland.sendMessage("dispatch exec noisetorch");
+          Hyprland.messageAsync("dispatch exec noisetorch");
         },
         hexpand: true,
         child: Widget.Box({
