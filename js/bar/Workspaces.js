@@ -46,7 +46,7 @@ export default (monitor) => {
                       // check for clients in the "minimized" workspace
                       for (const ws of Hyprland.workspaces) {
                         if (ws.id > 0) continue;
-                        if (ws.name.match(/\d+$/)[0] === id.toString() && ws.windows > 0) {
+                        if (ws.name.match(/\d+$/)?.[0] === id.toString() && ws.windows > 0) {
                           occupied = true;
                           break;
                         }
