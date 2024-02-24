@@ -1,84 +1,127 @@
 import { focusClientOrMinimize, fullscreenToggle, getHyprlandClientIcon } from "../helpers/Misc.js";
-import { Hyprland, Variable, Widget } from "../imports.js";
+import { Hyprland, Widget } from "../imports.js";
 
-const clientMap = Variable(new Map()); // maintain consistent order
-
-for (const client of Hyprland.clients) {
-  clientMap.value.set(client.address, client);
-}
-
-Hyprland.connect("notify::clients", (self) => {
-  for (const client of self.clients) {
-    clientMap.value.set(client.address, client);
-  }
-  clientMap.emit("changed");
-});
-
-Hyprland.connect("client-removed", (_, address) => {
-  clientMap.value.delete(address);
-});
-
-const TaskButton = (client) => {
+const TaskButton = (address) => {
   return Widget.Button({
     onClicked: () => {
-      focusClientOrMinimize(client);
+      focusClientOrMinimize(Hyprland.getClient(address));
     },
-    onMiddleClick: () => Hyprland.messageAsync(`dispatch closewindow address:${client.address}`),
-    onSecondaryClick: () => fullscreenToggle(client, 1, false),
+    onMiddleClick: () => Hyprland.messageAsync(`dispatch closewindow address:${address}`),
+    onSecondaryClick: () => fullscreenToggle(Hyprland.getClient(address), 1, false),
     hexpand: true,
     child: Widget.Box({
       children: [
         Widget.Icon({
           className: "icon",
-          icon: getHyprlandClientIcon(client),
+          icon: getHyprlandClientIcon(Hyprland.getClient(address)),
           size: 14,
         }),
         Widget.Label({
           className: "title",
-          label: client.fullscreen ? `󱇬 ${client.title}` : client.title,
+          label: (() => {
+            const client = Hyprland.getClient(address);
+            return client?.fullscreen ? `󱇬 ${client.title}` : client.title;
+          })(),
           truncate: "end",
+          setup: (self) => {
+            self.hook(
+              Hyprland,
+              (_, e, a) => {
+                const client = Hyprland.getClient(address);
+                if (
+                  client &&
+                  (e === "fullscreen" || (e === "windowtitle" && `0x${a}` === address))
+                ) {
+                  self.label = client.fullscreen ? `󱇬 ${client.title}` : client.title;
+                }
+              },
+              "event",
+            );
+          },
         }),
       ],
     }),
-    className:
-      client.workspace.id <= 0
-        ? "minimized"
-        : Hyprland.active.client.address === client.address
-          ? "active"
-          : "",
+
+    className: Hyprland.active.client.bind("address").as((a) => {
+      return a === address ? "active" : "";
+    }),
+    attribute: {
+      address: address,
+    },
+    setup: (self) => {
+      const checkVisible = () => {
+        const ws = Hyprland.getMonitor(self.parent.attribute.monitor)?.activeWorkspace.id;
+        const c = Hyprland.getClient(address);
+        if (!ws || !c) return;
+        self.visible = ws === c.workspace.id || c.workspace.name === `special:m${ws}`;
+
+        self.toggleClassName("minimized", c.workspace.id <= 0);
+      };
+
+      self
+        .hook(
+          Hyprland.active.client,
+          () => {
+            self.toggleClassName(
+              "active",
+              Hyprland.active.client.address === address ? "active" : "",
+            );
+          },
+          "notify::address",
+        )
+        .hook(
+          Hyprland,
+          (_, e) => {
+            if (e === "movewindow") {
+              checkVisible();
+            }
+          },
+          "event",
+        )
+        .hook(Hyprland.active.workspace, checkVisible);
+    },
   });
 };
 
 export default (monitor) => {
-  const tasklist = (self) => {
-    const ws = Hyprland.getMonitor(monitor)?.activeWorkspace.id;
-    if (!ws) return;
-    const tasks = [];
-    for (const client of clientMap.value.values()) {
-      if (
-        (client.workspace.id === ws || client.workspace.name === `special:m${ws}`) &&
-        client.title !== ""
-      ) {
-        tasks.push(TaskButton(client));
-      }
-    }
-    self.children = tasks.reverse();
-  };
-
-  const tasklistActive = (self) => {
-    // only recreate the tasklist if neccessary
-    if (Hyprland.active.monitor.id === monitor) tasklist(self);
-  };
-
   return Widget.Box({
     className: "tasklist",
     hexpand: true,
     homogeneous: true,
+    attribute: {
+      monitor,
+    },
     setup: (self) => {
       self
-        .hook(Hyprland.active.workspace, tasklistActive)
-        .hook(Hyprland.active.client, tasklistActive, "notify::address")
-        .hook(clientMap, tasklist, "changed");
+        .hook(
+          Hyprland,
+          (self, address) => {
+            if (address) {
+              self.children.find((c) => c.attribute.address === address)?.destroy();
+            }
+          },
+          "client-removed",
+        )
+        .hook(
+          Hyprland,
+          (self, address) => {
+            if (address) {
+              const client = Hyprland.getClient(address);
+              if (client.mapped) {
+                const button = TaskButton(client.address);
+                self.add(button);
+                self.reorder_child(button, 0);
+              }
+            }
+          },
+          "client-added",
+        );
+
+      const tasks = [];
+      for (const client of Hyprland.clients) {
+        if (client.mapped && client.monitor !== -1) tasks.push(TaskButton(client.address));
+      }
+      self.children = tasks.reverse();
     },
   });
 };
