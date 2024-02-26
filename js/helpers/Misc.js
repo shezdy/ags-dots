@@ -55,21 +55,6 @@ export function restoreClient() {
 // global so it can be called from hyprland keybinds
 globalThis.restoreClient = restoreClient;
 
-function _focusFS(client, workspaceID) {
-  const fsClient = Hyprland.clients.find(
-    (c) => c.workspace.id === workspaceID && c.fullscreen === true,
-  );
-  if (fsClient && fsClient.address !== client.address) {
-    const mode = fsClient.fullscreenMode;
-    Hyprland.messageAsync(`dispatch focuswindow address:${fsClient.address}`);
-    Hyprland.messageAsync("dispatch fullscreen 0");
-    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-    Hyprland.messageAsync(`dispatch fullscreen ${mode}`);
-  } else {
-    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-  }
-}
-
 /**
  * @param {object} client  hyprland client
  * @param {boolean} cursorWarp
@@ -82,16 +67,8 @@ export function focusClient(client, cursorWarp = false) {
   if (client.workspace.id < 1) {
     const normalWS = parseInt(client.workspace.name.match(/\d+$/)[0]);
     Hyprland.messageAsync(`dispatch movetoworkspace ${normalWS},address:${client.address}`);
-    if (Hyprland.getWorkspace(normalWS)?.hasfullscreen) {
-      _focusFS(client, normalWS);
-    }
-  } else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
-    _focusFS(client, client.workspace.id);
   } else {
     Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-    if (client.floating === true) {
-      Hyprland.messageAsync(`dispatch alterzorder top,address:${client.address}`);
-    }
   }
 
   if (!cursorWarp) {
@@ -107,18 +84,14 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
   if (!cursorWarp) {
     Hyprland.messageAsync("keyword general:no_cursor_warps true");
   }
+
   if (client.workspace.id > 0) {
     if (client.address === Hyprland.active.client.address)
       Hyprland.messageAsync(
         `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`,
       );
-    else if (Hyprland.getWorkspace(client.workspace.id)?.hasfullscreen) {
-      _focusFS(client, client.workspace.id);
-    } else {
+    else {
       Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-      if (client.floating === true) {
-        Hyprland.messageAsync(`dispatch alterzorder top,address:${client.address}`);
-      }
     }
   } else {
     Hyprland.messageAsync(
@@ -127,6 +100,7 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
       },address:${client.address}`,
     );
   }
+
   if (!cursorWarp) {
     Hyprland.messageAsync("keyword general:no_cursor_warps false");
   }
