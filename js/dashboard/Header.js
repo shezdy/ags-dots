@@ -22,41 +22,45 @@ const uptime = Variable("", {
   ],
 });
 
-const PowerMenu = (event) =>
-  Widget.Menu({
-    children: [
-      Widget.MenuItem({
-        onActivate: () => {
-          App.closeWindow("dashboard");
-          ConfirmAction(() => execSh(options.powermenu.suspend));
-        },
-        child: Widget.Box({
-          children: [Widget.Icon(icons.powermenu.suspend), Widget.Label("  Suspend")],
+const SystemRow = () => {
+  const PowerMenu = (event) =>
+    Widget.Menu({
+      children: [
+        Widget.MenuItem({
+          onActivate: () => {
+            App.closeWindow("dashboard");
+            ConfirmAction(() => execSh(options.powermenu.suspend));
+          },
+          child: Widget.Box({
+            children: [Widget.Icon(icons.powermenu.suspend), Widget.Label("  Suspend")],
+          }),
         }),
-      }),
-      Widget.MenuItem({
-        onActivate: () => {
-          App.closeWindow("dashboard");
-          ConfirmAction(() => execSh(options.powermenu.reboot));
-        },
-        child: Widget.Box({
-          children: [Widget.Icon(icons.powermenu.reboot), Widget.Label("  Reboot")],
+        Widget.MenuItem({
+          onActivate: () => {
+            App.closeWindow("dashboard");
+            ConfirmAction(() => execSh(options.powermenu.reboot));
+          },
+          child: Widget.Box({
+            children: [Widget.Icon(icons.powermenu.reboot), Widget.Label("  Reboot")],
+          }),
         }),
-      }),
-      Widget.MenuItem({
-        onActivate: () => {
-          App.closeWindow("dashboard");
-          ConfirmAction(() => execSh(options.powermenu.shutdown));
-        },
-        child: Widget.Box({
-          children: [Widget.Icon(icons.powermenu.shutdown), Widget.Label("  Shutdown")],
+        Widget.MenuItem({
+          onActivate: () => {
+            App.closeWindow("dashboard");
+            ConfirmAction(() => execSh(options.powermenu.shutdown));
+          },
+          child: Widget.Box({
+            children: [Widget.Icon(icons.powermenu.shutdown), Widget.Label("  Shutdown")],
+          }),
         }),
-      }),
-    ],
-  }).popup_at_pointer(event);
+      ],
+    })
+      .on("notify::visible", (self) => {
+        if (!self.visible) self.destroy();
+      })
+      .popup_at_pointer(event);
 
-const SystemRow = () =>
-  Widget.Box({
+  return Widget.Box({
     children: [
       Widget.Label({
         className: "uptime",
@@ -77,6 +81,7 @@ const SystemRow = () =>
       }),
     ],
   });
+};
 
 export default () =>
   Widget.Box({
