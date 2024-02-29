@@ -10,7 +10,7 @@ export const Padding = (name, { css = "", hexpand = true, vexpand = true } = {})
     setup: (w) => w.on("button-press-event", () => App.closeWindow(name)),
   });
 
-const PopupRevealer = (name, child, transition = "slide_down") =>
+const PopupRevealer = (name, child, transition = "none") =>
   Widget.Box(
     { css: "padding: 1px;" },
     Widget.Revealer({
