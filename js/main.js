@@ -55,13 +55,13 @@ try {
 }
 
 Hyprland.connect("monitor-added", () => {
-  Utils.exec("hyprctl dispatch exec 'ags -q ; ags'");
+  Utils.exec("hyprctl dispatch exec 'sleep 1; ags -q ; ags'");
 });
 Hyprland.connect("monitor-removed", () => {
-  Utils.exec("hyprctl dispatch exec 'ags -q ; ags'");
+  Utils.exec("hyprctl dispatch exec 'sleep 1; ags -q ; ags'");
 });
 
-export default {
+App.config({
   style: css,
   icons: `${App.configDir}/assets`,
   windows: [
@@ -77,4 +77,4 @@ export default {
   closeWindowDelay: {
     dashboard: options.transition.duration,
   },
-};
+});
