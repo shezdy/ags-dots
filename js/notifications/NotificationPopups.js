@@ -63,7 +63,6 @@ const PopupList = () =>
 
 export default () =>
   Widget.Window({
-    layer: "overlay",
     name: "popupNotifications",
     anchor: ["top", "right"],
     child: PopupList(),
