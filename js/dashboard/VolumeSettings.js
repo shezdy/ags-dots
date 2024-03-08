@@ -150,9 +150,9 @@ const DeviceItem = (stream, isSink = true) =>
       if (isSink) Audio.speaker = stream;
       else Audio.microphone = stream;
     },
-    className: Audio.bind(isSink ? "speaker" : "microphone").transform((s) =>
-      s === stream ? "selected" : "",
-    ),
+    className: Audio.bind(isSink ? "speaker" : "microphone").transform((s) => {
+      return s.id === stream.id ? "selected" : "";
+    }),
     child: Widget.Box({
       children: [
         Widget.Icon({
