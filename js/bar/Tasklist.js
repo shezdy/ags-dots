@@ -52,8 +52,12 @@ const TaskButton = (address) => {
       const checkVisible = () => {
         const ws = Hyprland.getMonitor(self.parent.attribute.monitor)?.activeWorkspace.id;
         const c = Hyprland.getClient(address);
+
         if (!ws || !c) return;
-        self.visible = ws === c.workspace.id || c.workspace.name === `special:m${ws}`;
+
+        self.visible =
+          (ws === c.workspace.id || c.workspace.name === `special:m${ws}`) &&
+          !(c.xwayland && c.title === ""); // if it is xwayland and has no title it is probably a tooltip or smth
 
         self.toggleClassName("minimized", c.workspace.id <= 0);
       };
