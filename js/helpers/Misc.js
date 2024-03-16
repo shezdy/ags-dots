@@ -12,7 +12,7 @@ export function execBash(cmd) {
 }
 
 export function launchApp(app) {
-  Hyprland.messageAsync(`dispatch exec gtk-launch ${app.desktop}`);
+  Hyprland.messageAsync(`dispatch exec gio launch ${app.app.filename}`);
   app.frequency++;
 }
 
