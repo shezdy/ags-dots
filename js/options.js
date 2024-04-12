@@ -25,13 +25,7 @@ export default {
     lock: `
     playerctl -a pause
     swaylock -f -c "#141319"`,
-    logout: `
-    hyprctl dispatch exit 0
-    sleep 2
-    if pgrep -x Hyprland >/dev/null; then
-        pkill -9 Hyprland
-    fi
-    `,
+    logout: "hyprctl dispatch exit",
   },
   transition: {
     duration: 200,
@@ -58,7 +52,7 @@ export default {
       "vscodium - wayland",
       "bitwarden",
       "tor browser",
-      "system monitor",
+      "qalculate! (qt)",
     ],
   },
 };
