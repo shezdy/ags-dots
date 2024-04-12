@@ -65,7 +65,7 @@ label {
 window.popup {
   menu {
     border: $border_width solid $border_color;
-    border-radius: 8px;
+    border-radius: $radii;
     background-color: $bg;
     padding: calc($spacing / 2);
 
@@ -77,7 +77,7 @@ window.popup {
 
     menuitem {
       @include button($flat: true, $transition_dur: 0);
-      border-radius: 8px;
+      border-radius: $radii;
       padding: 3px 16px;
       label {
         font-weight: 500;

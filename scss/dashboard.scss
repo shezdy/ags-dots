@@ -120,7 +120,11 @@ window#dashboard .dashboard {
     .uptime,
     button {
       @include button($flat: false);
-      border-radius: 1.5em;
+      @if $radii == 0 {
+        border-radius: 0;
+      } @else {
+        border-radius: 1.5em;
+      }
       background-color: $surface2;
       padding: calc($padding/2);
       font-size: 1.2em;
@@ -140,7 +144,11 @@ window#dashboard .dashboard {
   .quick-settings {
     @include spacing();
     button {
-      border-radius: 1.5em;
+      @if $radii == 0 {
+        border-radius: 0;
+      } @else {
+        border-radius: 1.5em;
+      }
     }
 
     .quick-tiles {
@@ -150,7 +158,11 @@ window#dashboard .dashboard {
 
       button {
         @include button($flat: false);
-        border-radius: 1.5em;
+        @if $radii == 0 {
+          border-radius: 0;
+        } @else {
+          border-radius: 1.5em;
+        }
         background-color: $surface2;
         padding: 0 $padding * 1.5;
         font-size: 1.2rem;

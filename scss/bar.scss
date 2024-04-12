@@ -245,4 +245,11 @@ $bar_button_background_hover: false;
     color: $purple;
     padding: 0 $bar_spacing;
   }
+
+  .error-indicator {
+    @include button($flat: true);
+    margin: $bar_margin_v 0;
+    padding: 0 $bar_spacing;
+    color: $red;
+  }
 }

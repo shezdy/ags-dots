@@ -188,7 +188,7 @@
     highlight,
     progress {
       border-radius: max($radii - $border-width, 0);
-      background-image: $gradient;
+      background-color: $accent;
       min-height: $width;
       min-width: $width;
     }
