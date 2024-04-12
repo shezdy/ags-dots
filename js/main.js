@@ -9,17 +9,15 @@ import options from "./options.js";
 import PowerMenu from "./powermenu/PowerMenu.js";
 import Confirm from "./widgets/Confirm.js";
 
-// Gdk monitors do not neccessarily have the same id as hyprland ones, so we use the monitor model to make sure
-// windows use the correct monitor even if the Gdk monitor has a different id from the hyprland one.
-// This will work as long as we don't have multiple monitors of the same model.
-// Gdk4 has monitor.get_connector(), but this isn't an option with Gdk3.
+// Gdk monitors do not neccessarily have the same id as hyprland ones, so we use
+// monitor position as a key to match gdk monitors with corresponding hyprland monitors
 function getGdkMonitors() {
   const display = Gdk.Display.get_default();
   const numGdkMonitors = display.get_n_monitors();
   const gdkMonitors = new Map();
   for (let i = 0; i < numGdkMonitors; i++) {
-    const model = display.get_monitor(i).model;
-    gdkMonitors.set(model, i);
+    const geometry = display.get_monitor(i).geometry;
+    gdkMonitors.set(`${geometry.x}${geometry.y}`, i);
   }
   return gdkMonitors;
 }
@@ -28,9 +26,9 @@ function forMonitors(widget) {
   const monitors = JSON.parse(Utils.exec("hyprctl -j monitors"));
   const gdkMonitors = getGdkMonitors();
   return monitors.map((monitor) => {
-    const gdkMonitor = gdkMonitors.get(monitor.model);
-    if (gdkMonitor !== undefined) {
-      return widget(monitor.id, gdkMonitor);
+    const gdkMonitorID = gdkMonitors.get(`${monitor.x}${monitor.y}`);
+    if (gdkMonitorID !== undefined) {
+      return widget(monitor.id, gdkMonitorID);
     }
     console.warn(`Couldn't find Gdk monitor for Hyprland monitor ID ${monitor.id}.`);
     return widget(monitor.id, monitor.id);
