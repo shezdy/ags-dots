@@ -54,7 +54,7 @@ const Applauncher = () => {
             (app) => app.name.toLowerCase() === name.toLowerCase(),
           );
           if (!app) {
-            console.warn(`Launcher pinned app "${term}" not found`);
+            console.warn(`Launcher pinned app "${name}" not found`);
             continue;
           }
           self.add(AppItem(app));
