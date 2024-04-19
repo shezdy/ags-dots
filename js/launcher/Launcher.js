@@ -88,6 +88,10 @@ const Applauncher = () => {
         hscroll: "never",
         vscroll: "always",
         child: Applications.bind().transform(() => flowbox()),
+        setup: (self) =>
+          self.on("map", (self) => {
+            self.vadjustment.value = self.vadjustment.lower;
+          }),
       }),
     ],
     setup: (self) => {
