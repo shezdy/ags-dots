@@ -28,17 +28,31 @@ export default (monitor) => {
 
   const extraWorkspaces = Widget.Box({
     setup: (self) => {
-      const extras = [];
+      const addExtraWorkspaceButton = (id) => {
+        let low = 0;
+        let high = self.children.length;
+
+        while (low < high) {
+          const mid = (low + high) >>> 1;
+          if (self.children[mid].attribute.id < id) low = mid + 1;
+          else high = mid;
+        }
+
+        const newButton = ExtraWorkspaceButton(id);
+        self.add(newButton);
+        self.reorder_child(newButton, low);
+        newButton.show_all();
+      };
+
       for (const ws of Hyprland.workspaces) {
         if (ws.monitorID !== monitor) continue;
 
         const id = ws.id;
 
         if ((id < min && id > 0) || id > max) {
-          extras.push(ExtraWorkspaceButton(id));
+          addExtraWorkspaceButton(id);
         }
       }
-      self.children = extras;
 
       self
         .hook(
@@ -51,8 +65,9 @@ export default (monitor) => {
                 ((id < min && id > 0) || id > max) &&
                 Hyprland.getWorkspace(id)?.monitorID === monitor
               ) {
-                self.add(ExtraWorkspaceButton(id));
-                self.show_all();
+                if (!self.children.find((c) => c.attribute.id === id)) {
+                  addExtraWorkspaceButton(id);
+                }
               } else {
                 self.children.find((c) => c.attribute.id === id)?.destroy();
               }
@@ -63,8 +78,7 @@ export default (monitor) => {
                 Hyprland.getWorkspace(id)?.monitorID === monitor
               ) {
                 if (!self.children.find((c) => c.attribute.id === id)) {
-                  self.add(ExtraWorkspaceButton(id));
-                  self.show_all();
+                  addExtraWorkspaceButton(id);
                 }
               } else {
                 self.children.find((c) => c.attribute.id === id)?.destroy();
@@ -81,9 +95,7 @@ export default (monitor) => {
               Hyprland.getWorkspace(id)?.monitorID === monitor &&
               ((id < min && id > 0) || id > max)
             ) {
-              const button = ExtraWorkspaceButton(id);
-              self.add(button);
-              self.show_all();
+              addExtraWorkspaceButton(id);
             }
           },
           "workspace-added",
