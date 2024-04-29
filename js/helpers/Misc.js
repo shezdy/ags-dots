@@ -1,5 +1,5 @@
 import icons from "../icons.js";
-import { App, Applications, Gtk, Hyprland, Utils } from "../imports.js";
+import { Applications, Hyprland, Utils } from "../imports.js";
 
 export function execSh(cmd) {
   Utils.execAsync(["sh", "-c", `${cmd}`]).catch((error) => console.error(`execSh error: ${error}`));

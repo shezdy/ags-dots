@@ -95,11 +95,11 @@ const Right = () =>
     children: [SysTray(), Media(), SysIndicators()],
   });
 
-export default (monitor, gdkMonitor) =>
+export default (monitor, gdkmonitor) =>
   Widget.Window({
     name: `bar${monitor}`,
     exclusivity: "exclusive",
-    monitor: gdkMonitor,
+    gdkmonitor,
     anchor: ["top", "left", "right"],
     child: Widget.Box({
       className: "bar",

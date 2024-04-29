@@ -1,10 +1,10 @@
 import { App, Widget } from "../imports.js";
 
-export default (monitor) =>
+export default (monitor, gdkmonitor) =>
   Widget.Window({
     name: `desktop${monitor}`,
     className: "desktop",
-    monitor: monitor,
+    gdkmonitor,
     layer: "background",
     anchor: ["top", "bottom", "left", "right"],
     child: Widget.EventBox({
