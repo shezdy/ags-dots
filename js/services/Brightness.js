@@ -100,7 +100,7 @@ class Brightness extends Service {
     try {
       this.#screens = new Map();
       const out = Utils.exec("brightnessctl --class=backlight -l -m");
-      if (out.trim() === "") {
+      if (out.startsWith("Failed")) {
         this.#screens = undefined;
         return;
       }
