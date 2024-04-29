@@ -219,7 +219,7 @@ window#dashboard .dashboard {
       }
 
       .mixer-item {
-        margin-bottom: $spacing;
+        margin: 0 $spacing $spacing $spacing;
         scale {
           @include slider($width: 7px);
         }

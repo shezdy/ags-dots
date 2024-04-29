@@ -22,7 +22,7 @@ export default {
       speaker: "audio-speakers-symbolic",
       card: "audio-card-symbolic",
     },
-    mixer: "",
+    mixer: "mixer-symbolic",
     generic: "audio-x-generic-symbolic",
   },
   powermode: {

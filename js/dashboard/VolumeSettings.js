@@ -1,6 +1,5 @@
 import icons from "../icons.js";
 import { App, Hyprland } from "../imports.js";
-import FontIcon from "../widgets/FontIcon.js";
 import { Arrow } from "../widgets/ToggleButton.js";
 import { Menu } from "../widgets/ToggleButton.js";
 import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
@@ -182,7 +181,7 @@ const SettingsButton = () =>
 export const AppMixer = () =>
   Menu({
     name: "app-mixer",
-    icon: FontIcon(icons.audio.mixer),
+    icon: Widget.Icon(icons.audio.mixer),
     title: Widget.Label("Application Mixer"),
     content: [
       Widget.Box({
@@ -190,8 +189,6 @@ export const AppMixer = () =>
         className: "mixer",
         children: Audio.bind("apps").transform((a) => a.map(MixerItem)),
       }),
-      Widget.Separator(),
-      SettingsButton(),
     ],
   });
 
@@ -228,7 +225,7 @@ export const SourceSelector = () =>
         },
         hexpand: true,
         child: Widget.Box({
-          children: [Widget.Icon(icons.audio.generic), Widget.Label("NoiseTorch")],
+          children: [Widget.Icon(icons.audio.mixer), Widget.Label("NoiseTorch")],
         }),
       }),
       SettingsButton(),
