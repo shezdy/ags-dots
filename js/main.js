@@ -1,3 +1,5 @@
+import "./init.js";
+
 import AltTab from "./alttab/AltTab.js";
 import Bar from "./bar/Bar.js";
 import Dashboard from "./dashboard/Dashboard.js";
