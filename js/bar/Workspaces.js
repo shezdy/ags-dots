@@ -139,6 +139,7 @@ export default (monitor) => {
                     const id = i + min;
                     if (activeID === id) {
                       btn.toggleClassName("active", true);
+                      btn.toggleClassName("urgent", false);
                       continue;
                     }
                     btn.toggleClassName("active", false);
@@ -177,6 +178,23 @@ export default (monitor) => {
                       }
                     },
                     "notify::workspaces",
+                  )
+                  .hook(
+                    Hyprland,
+                    (_, address) => {
+                      if (!address) return;
+                      const wsId = Hyprland.getClient(`${address}`)?.workspace.id;
+                      if (
+                        !wsId ||
+                        wsId === Hyprland.active.workspace.id ||
+                        wsId < min ||
+                        wsId > max
+                      )
+                        return;
+
+                      self.children[(wsId - 1) % numWorkspaces]?.toggleClassName("urgent", true);
+                    },
+                    "urgent-window",
                   );
 
                 for (const m of Hyprland.monitors) {
