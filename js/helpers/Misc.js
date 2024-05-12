@@ -61,7 +61,7 @@ globalThis.restoreClient = restoreClient;
  */
 export function focusClient(client, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword cursor:no_warps true");
   }
 
   if (client.workspace.id < 1) {
@@ -72,7 +72,7 @@ export function focusClient(client, cursorWarp = false) {
   }
 
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword cursor:no_warps false");
   }
 }
 
@@ -82,7 +82,7 @@ export function focusClient(client, cursorWarp = false) {
  */
 export function focusClientOrMinimize(client, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword cursor:no_warps true");
   }
 
   if (client.workspace.id > 0) {
@@ -102,7 +102,7 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
   }
 
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword cursor:no_warps false");
   }
 }
 
@@ -113,11 +113,11 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
  */
 export function fullscreenToggle(client, mode, cursorWarp = false) {
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps true");
+    Hyprland.messageAsync("keyword cursor:no_warps true");
   }
   Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
   Hyprland.messageAsync(`dispatch fullscreen ${mode}`);
   if (!cursorWarp) {
-    Hyprland.messageAsync("keyword general:no_cursor_warps false");
+    Hyprland.messageAsync("keyword cursor:no_warps false");
   }
 }
