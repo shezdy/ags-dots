@@ -163,20 +163,14 @@ export default (monitor) => {
                     Hyprland.active.workspace,
                     () => {
                       const ws = Hyprland.getWorkspace(Hyprland.active.workspace.id);
-                      if (ws?.monitorID === monitor) {
+                      if (ws?.monitorID === monitor || (ws.id >= min && ws.id <= max))
                         update(ws.id);
-                      }
                     },
                     "notify::id",
                   )
                   .hook(
                     Hyprland,
-                    () => {
-                      const ws = Hyprland.getWorkspace(Hyprland.active.workspace.id);
-                      if (ws?.monitorID === monitor) {
-                        update(ws.id);
-                      }
-                    },
+                    () => update(Hyprland.getMonitor(monitor)?.activeWorkspace.id),
                     "notify::workspaces",
                   )
                   .hook(
@@ -197,9 +191,7 @@ export default (monitor) => {
                     "urgent-window",
                   );
 
-                for (const m of Hyprland.monitors) {
-                  update(m.activeWorkspace.id);
-                }
+                update(Hyprland.getMonitor(monitor)?.activeWorkspace.id);
               },
             }),
             extraWorkspaces,
