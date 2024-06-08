@@ -29,51 +29,39 @@ export function getHyprlandClientIcon(client) {
 }
 
 export function minimizeFocused() {
-  try {
-    const out = Hyprland.message("j/activewindow");
-    const client = JSON.parse(out);
-    if (client.workspace.id > 0)
-      Hyprland.messageAsync(`dispatch movetoworkspacesilent special:m${client.workspace.id}`);
-  } catch (e) {
-    console.error(e);
-  }
+  if (Hyprland.active.workspace.id)
+    Hyprland.messageAsync(
+      `dispatch movetoworkspacesilent special:m${Hyprland.active.workspace.id}`,
+    );
 }
-// global so it can be called from hyprland keybinds
-globalThis.minimizeFocused = minimizeFocused;
 
 export function restoreClient() {
-  try {
-    const out = Hyprland.message("j/activeworkspace");
-    const id = JSON.parse(out).id;
-    const client = Hyprland.clients.find((c) => c.workspace.name === `special:m${id}`);
-    if (client)
-      Hyprland.messageAsync(`dispatch movetoworkspacesilent ${id},address:${client.address}`);
-  } catch (e) {
-    console.error(e);
-  }
+  const client = Hyprland.clients.find(
+    (c) => c.workspace.name === `special:m${Hyprland.active.workspace.id}`,
+  );
+  if (client)
+    Hyprland.messageAsync(
+      `dispatch movetoworkspacesilent ${Hyprland.active.workspace.id},address:${client.address}`,
+    );
 }
-// global so it can be called from hyprland keybinds
-globalThis.restoreClient = restoreClient;
 
 /**
  * @param {object} client  hyprland client
  * @param {boolean} cursorWarp
  */
 export function focusClient(client, cursorWarp = false) {
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps true");
-  }
+  let cmd = "[[BATCH]]";
+  if (!cursorWarp) cmd += "keyword cursor:no_warps 1;";
 
   if (client.workspace.id < 1) {
     const normalWS = parseInt(client.workspace.name.match(/\d+$/)[0]);
-    Hyprland.messageAsync(`dispatch movetoworkspace ${normalWS},address:${client.address}`);
+    cmd += `dispatch movetoworkspace ${normalWS},address:${client.address};`;
   } else {
-    Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
+    cmd += `dispatch focuswindow address:${client.address};`;
   }
 
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps false");
-  }
+  if (!cursorWarp) cmd += `"keyword cursor:no_warps 0"`;
+  Hyprland.messageAsync(cmd);
 }
 
 /**
@@ -81,29 +69,21 @@ export function focusClient(client, cursorWarp = false) {
  * @param {boolean} cursorWarp
  */
 export function focusClientOrMinimize(client, cursorWarp = false) {
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps true");
-  }
+  let cmd = "[[BATCH]]";
+  if (!cursorWarp) cmd += "keyword cursor:no_warps 1;";
 
   if (client.workspace.id > 0) {
     if (client.address === Hyprland.active.client.address)
-      Hyprland.messageAsync(
-        `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address}`,
-      );
-    else {
-      Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-    }
+      cmd += `dispatch movetoworkspacesilent special:m${client.workspace.id},address:${client.address};`;
+    else cmd += `dispatch focuswindow address:${client.address};`;
   } else {
-    Hyprland.messageAsync(
-      `dispatch movetoworkspacesilent ${
-        client.workspace.name.match(/\d+$/)[0] // get workspace number at the end of the special workspace name
-      },address:${client.address}`,
-    );
+    cmd += `dispatch movetoworkspacesilent ${
+      client.workspace.name.match(/\d+$/)[0] // get workspace number at the end of the special workspace name
+    },address:${client.address};`;
   }
 
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps false");
-  }
+  if (!cursorWarp) cmd += "keyword cursor:no_warps 0";
+  Hyprland.messageAsync(cmd);
 }
 
 /**
@@ -112,12 +92,11 @@ export function focusClientOrMinimize(client, cursorWarp = false) {
  * @param {boolean} cursorWarp
  */
 export function fullscreenToggle(client, mode, cursorWarp = false) {
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps true");
-  }
-  Hyprland.messageAsync(`dispatch focuswindow address:${client.address}`);
-  Hyprland.messageAsync(`dispatch fullscreen ${mode}`);
-  if (!cursorWarp) {
-    Hyprland.messageAsync("keyword cursor:no_warps false");
-  }
+  let cmd = "[[BATCH]]";
+  if (!cursorWarp) cmd += "keyword cursor:no_warps 1;";
+
+  cmd += `dispatch focuswindow address:${client.address}; dispatch fullscreen ${mode};`;
+
+  if (!cursorWarp) cmd += "keyword cursor:no_warps 0";
+  Hyprland.messageAsync(cmd);
 }
