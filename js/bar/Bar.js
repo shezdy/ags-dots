@@ -65,7 +65,6 @@ const ConfigErrorIndicator = () =>
             } else {
               self.visible = false;
             }
-            print("configreloaded");
           }
         },
         "event",
