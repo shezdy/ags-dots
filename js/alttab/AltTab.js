@@ -47,7 +47,7 @@ Hyprland.connect("submap", (_self, submapName) => {
   else mutex.runExclusive(focusClientAndHide, submapName);
 });
 
-const cycleNext = (isInitialPress = false) => {
+export const cycleNext = (isInitialPress = false) => {
   mutex.runExclusive(() => {
     if (!submap) return;
     if (ignoreCycle && isInitialPress) {
@@ -59,7 +59,6 @@ const cycleNext = (isInitialPress = false) => {
     else selectedIndex.value += 1;
   });
 };
-globalThis.cycleNext = cycleNext;
 
 const ClientItem = (client, index) => {
   return Widget.Button({

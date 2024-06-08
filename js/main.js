@@ -9,11 +9,15 @@ import Launcher from "./launcher/Launcher.js";
 import NotificationPopups from "./notifications/NotificationPopups.js";
 import options from "./options.js";
 import PowerMenu from "./powermenu/PowerMenu.js";
+import Ipc from "./services/Ipc.js";
 import Confirm from "./widgets/Confirm.js";
 
 function forMonitors(widget) {
   return Hyprland.monitors.map((monitor) => {
-    return widget(monitor.id, Gdk.Display.get_default().get_monitor_at_point(monitor.x, monitor.y));
+    return widget(
+      monitor.id,
+      Gdk.Display.get_default()?.get_monitor_at_point(monitor.x, monitor.y),
+    );
   });
 }
 
@@ -56,3 +60,5 @@ App.config({
     dashboard: options.transition.duration,
   },
 });
+
+Ipc.start();
