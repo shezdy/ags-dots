@@ -16,15 +16,16 @@ export default {
     reboot: "systemctl reboot",
     suspend: `
     playerctl -a pause & 
-    ags -q
-    swaylock -f -c "#141319"
-    pid=$(pgrep swaylock)
+    ags -q &
+    hyprlock &
+    pid=$!
+    sleep 0.1
     systemctl suspend
     waitpid $pid
     hyprctl dispatch exec ags`,
     lock: `
     playerctl -a pause
-    swaylock -f -c "#141319"`,
+    hyprlock`,
     logout: "hyprctl dispatch exit",
   },
   transition: {
