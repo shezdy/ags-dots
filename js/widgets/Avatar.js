@@ -8,7 +8,7 @@ export default (props) =>
     className: "avatar",
     css: `
     background-image: url("${options.avatar}");
-    background-size: cover;`,
+    background-size: contain;`,
     setup: (self) => {
       self.on("draw", (box) => {
         const h = box.get_allocated_height();
