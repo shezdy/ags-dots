@@ -56,4 +56,10 @@ export default {
       "qalculate! (qt)",
     ],
   },
+  nightlight: {
+    // requires wl-gammarelay-rs
+    on: "19:30",
+    off: "6:00",
+    temp: "3500",
+  },
 };

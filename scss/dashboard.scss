@@ -166,8 +166,7 @@ window#dashboard .dashboard {
         background-color: $surface2;
         padding: 0 $padding * 1.5;
         font-size: 1.2rem;
-        min-height: 40px;
-        min-width: 24px;
+        min-height: 42px;
         > box {
           padding-left: calc($padding/2);
         }
@@ -186,6 +185,15 @@ window#dashboard .dashboard {
         }
         .open-icon {
           font-size: 0.85em;
+        }
+        .text-box {
+          label {
+            margin: 0;
+            padding: 0;
+            &.subtext {
+              color: $fg_dark;
+            }
+          }
         }
       }
     }

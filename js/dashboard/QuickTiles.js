@@ -1,6 +1,8 @@
 import icons from "../icons.js";
-import { App, Hyprland, Widget } from "../imports.js";
+import { App, Hyprland, PowerProfiles, Widget } from "../imports.js";
+import options from "../options.js";
 import Brightness from "../services/Brightness.js";
+import NightLight from "../services/NightLight.js";
 import FontIcon from "../widgets/FontIcon.js";
 
 const BrightnessPreset = (brightness, text) =>
@@ -40,6 +42,61 @@ const ExecQuickTile = ({ exec, icon, labelText }) => {
   });
 };
 
+const PowerProfileTile = () =>
+  Widget.Button({
+    hexpand: true,
+    onClicked: () => {
+      const i = PowerProfiles.profiles.findIndex((p) => p.Profile === PowerProfiles.activeProfile);
+      if (i === -1) PowerProfiles.activeProfile = PowerProfiles.profiles[0].Profile;
+      else
+        PowerProfiles.activeProfile =
+          PowerProfiles.profiles[(i + 1) % PowerProfiles.profiles.length].Profile;
+    },
+    child: Widget.Box({
+      vpack: "center",
+      children: [
+        Widget.Icon(icons.powermode.profile.Balanced),
+        Widget.Label({
+          label: PowerProfiles.bind("activeProfile").as((p) => p[0].toUpperCase() + p.slice(1)),
+        }),
+      ],
+    }),
+  });
+
+const NightLightTile = () => {
+  if (!NightLight) return null;
+  return Widget.Button({
+    attribute: {
+      enabled: false,
+    },
+    hexpand: true,
+    onClicked: () => {
+      NightLight.toggle();
+    },
+    child: Widget.Box({
+      vpack: "center",
+      children: [
+        Widget.Icon("weather-clear-night-symbolic"),
+        Widget.Box({
+          className: "text-box",
+          vertical: true,
+          children: [
+            Widget.Label({
+              label: "Night Light",
+              hpack: "start",
+            }),
+            Widget.Label({
+              label: NightLight.bind("text"),
+              className: "subtext",
+              hpack: "start",
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
+};
+
 export default () =>
   Widget.Box({
     className: "quick-tiles horizontal",
@@ -62,6 +119,11 @@ export default () =>
                 labelText: "Firewall",
               }),
             ],
+          }),
+          Widget.Box({
+            vertical: false,
+            homogeneous: true,
+            children: [NightLightTile(), PowerProfileTile()],
           }),
           Widget.Box({
             vertical: false,

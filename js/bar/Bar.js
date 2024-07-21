@@ -1,4 +1,5 @@
 import { App, Hyprland, Widget } from "../imports.js";
+import Battery from "./Battery.js";
 import Clock from "./Clock.js";
 import Media from "./Media.js";
 import Network from "./Network.js";
@@ -21,7 +22,7 @@ const SysIndicators = () => {
       Widget.EventBox({
         className: "eventbox",
         child: Widget.Box({
-          children: [Volume(), Network(), Clock()],
+          children: [Volume(), Battery(), Network(), Clock()],
         }),
         setup: (self) => {
           self.hook(App, (self, win, visible) => {
@@ -98,7 +99,7 @@ export default (monitor, gdkmonitor) =>
   Widget.Window({
     name: `bar${monitor}`,
     exclusivity: "exclusive",
-    gdkmonitor,
+    monitor: gdkmonitor,
     anchor: ["top", "left", "right"],
     child: Widget.Box({
       className: "bar",

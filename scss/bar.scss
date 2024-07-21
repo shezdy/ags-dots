@@ -233,7 +233,16 @@ $bar_button_background_hover: false;
     color: $green;
     padding: 0 $bar_spacing;
     image {
-      font-size: $font-size - 2px;
+      font-size: $bar_icon_size;
+      margin-right: 4px;
+    }
+  }
+
+  .battery {
+    color: $cyan;
+    padding: 0 $bar_spacing;
+    image {
+      font-size: $bar_icon_size;
       margin-right: 4px;
     }
   }
@@ -242,7 +251,7 @@ $bar_button_background_hover: false;
     color: $blue;
     padding: 0 $bar_spacing;
     image {
-      font-size: $font-size - 2px;
+      font-size: $bar_icon_size;
     }
   }
 
