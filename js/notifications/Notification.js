@@ -136,12 +136,13 @@ const NotificationReveal = (notification, visible = false) => {
     children: [slideDownRevealer],
   });
 
-  box.attribute.destroyWithAnims = () => {
+  box.attribute.destroyWithAnims = (shouldClose) => {
     slideLeftRevealer.revealChild = false;
     Utils.timeout(200, () => {
       slideDownRevealer.revealChild = false;
       Utils.timeout(200, () => {
         box.destroy();
+        App.closeWindow("popupNotifications");
       });
     });
   };

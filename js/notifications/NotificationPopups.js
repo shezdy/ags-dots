@@ -18,13 +18,15 @@ const Popups = () =>
 
         if (notif.attribute.count <= 0) {
           box.attribute.map.delete(id);
-          notif.attribute.destroyWithAnims();
+          notif.attribute.destroyWithAnims(box.attribute.map.size === 0);
         }
       },
       notify: (box, id) => {
         const notif = Notifications.getNotification(id);
 
         if (Notifications.dnd || !notif) return;
+
+        if (box.attribute.map.size === 0) App.openWindow("popupNotifications");
 
         const replace = box.attribute.map.get(id);
 
@@ -66,4 +68,6 @@ export default () =>
     name: "popupNotifications",
     anchor: ["top", "right"],
     child: PopupList(),
+    layer: "overlay",
+    visible: false,
   });
