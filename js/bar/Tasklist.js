@@ -41,10 +41,6 @@ const TaskButton = (address) => {
         }),
       ],
     }),
-
-    className: Hyprland.active.client.bind("address").as((a) => {
-      return a === address ? "active" : "";
-    }),
     attribute: {
       address: address,
     },
@@ -66,10 +62,7 @@ const TaskButton = (address) => {
         .hook(
           Hyprland.active.client,
           () => {
-            self.toggleClassName(
-              "active",
-              Hyprland.active.client.address === address ? "active" : "",
-            );
+            self.toggleClassName("active", Hyprland.active.client.address === address);
           },
           "notify::address",
         )
