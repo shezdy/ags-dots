@@ -27,7 +27,7 @@ class Screen extends Service {
 
   set brightness(p) {
     let percent = p;
-    if (p < 0) percent = 0;
+    if (p <= 0) percent = 0.01;
 
     if (p > 1) percent = 1;
 
