@@ -4,7 +4,7 @@ import AltTab from "./alttab/AltTab.js";
 import Bar from "./bar/Bar.js";
 import Dashboard from "./dashboard/Dashboard.js";
 import Desktop from "./desktop/Desktop.js";
-import { App, GLib, Gdk, Hyprland, Utils } from "./imports.js";
+import { App, GLib, Hyprland, Utils } from "./imports.js";
 import Launcher from "./launcher/Launcher.js";
 import NotificationPopups from "./notifications/NotificationPopups.js";
 import options from "./options.js";
@@ -13,11 +13,17 @@ import Ipc from "./services/Ipc.js";
 import Confirm from "./widgets/Confirm.js";
 
 function forMonitors(widget) {
+  // gtk bug workaround
+  const gdkMonitors = Utils.exec(`gjs -m ${App.configDir}/js/helpers/monitors.js`).split("\n");
   return Hyprland.monitors.map((monitor) => {
-    return widget(
-      monitor.id,
-      Gdk.Display.get_default()?.get_monitor_at_point(monitor.x, monitor.y),
-    );
+    let i = 0;
+    for (i; i < gdkMonitors.length; i++) {
+      if (gdkMonitors[i] === monitor.name) break;
+    }
+
+    if (i === gdkMonitors.length) return widget(monitor.id, monitor.id);
+
+    return widget(monitor.id, i);
   });
 }
 
